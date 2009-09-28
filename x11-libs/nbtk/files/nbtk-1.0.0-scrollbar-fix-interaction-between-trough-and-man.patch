@@ -1,0 +1,53 @@
+From bd0ccee05bacd2cc094dbaf06a0daf87eae58dfa Mon Sep 17 00:00:00 2001
+From: Thomas Wood <thomas.wood@intel.com>
+Date: Mon, 10 Aug 2009 12:14:05 +0100
+Subject: [PATCH 1/2] [NbtkScrollBar] fix interaction between trough and manual scrolling
+
+The ClutterAnimation should be removed once it has completed, otherwise
+the next trough scroll will be forced to start from the previous trough
+scroll position.
+
+Fixes bug 4970
+---
+ nbtk/nbtk-scroll-bar.c |   11 ++++++++++-
+ 1 files changed, 10 insertions(+), 1 deletions(-)
+
+diff --git a/nbtk/nbtk-scroll-bar.c b/nbtk/nbtk-scroll-bar.c
+index 472343d..b5b10cf 100644
+--- a/nbtk/nbtk-scroll-bar.c
++++ b/nbtk/nbtk-scroll-bar.c
+@@ -601,6 +601,14 @@ handle_button_press_event_cb (ClutterActor       *actor,
+   return TRUE;
+ }
+ 
++static void
++animation_completed_cb (ClutterAnimation     *animation,
++                        NbtkScrollBarPrivate *priv)
++{
++  g_object_unref (priv->paging_animation);
++  priv->paging_animation = NULL;
++}
++
+ static gboolean
+ trough_paging_cb (NbtkScrollBar *self)
+ {
+@@ -688,7 +696,6 @@ trough_paging_cb (NbtkScrollBar *self)
+   if (self->priv->paging_animation)
+     {
+       clutter_animation_completed (self->priv->paging_animation);
+-      g_object_unref (self->priv->paging_animation);
+     }
+ 
+   /* FIXME: Creating a new animation for each scroll is probably not the best
+@@ -702,6 +709,8 @@ trough_paging_cb (NbtkScrollBar *self)
+   g_value_set_double (&v, value);
+   clutter_animation_bind (self->priv->paging_animation, "value", &v);
+   t = clutter_animation_get_timeline (self->priv->paging_animation);
++  g_signal_connect (a, "completed", G_CALLBACK (animation_completed_cb),
++                    self->priv);
+   clutter_timeline_start (t);
+ 
+   return ret;
+-- 
+1.6.3.3
+
