@@ -1,0 +1,24 @@
+diff -urN clutter-imcontext-0.1.orig/clutter-imcontext/clutter-imcontext.pc.in clutter-imcontext-0.1/clutter-imcontext/clutter-imcontext.pc.in
+--- clutter-imcontext-0.1.orig/clutter-imcontext/clutter-imcontext.pc.in	2009-07-20 03:42:32.000000000 +0100
++++ clutter-imcontext-0.1/clutter-imcontext/clutter-imcontext.pc.in	2009-07-29 11:41:35.000000000 +0100
+@@ -11,7 +11,7 @@
+ 
+ Name: Clutter Input Method Context
+ Description: IMContext For Clutter
+-Requires: clutter-0.9 
++Requires: clutter-1.0
+ Version: @VERSION@
+ Libs: -L${libdir} -lclutter-imcontext-${apiversion}
+ Cflags: -I${includedir}/clutter-imcontext-${apiversion}
+diff -urN clutter-imcontext-0.1.orig/configure.ac clutter-imcontext-0.1/configure.ac
+--- clutter-imcontext-0.1.orig/configure.ac	2009-07-20 03:42:32.000000000 +0100
++++ clutter-imcontext-0.1/configure.ac	2009-07-29 11:40:39.000000000 +0100
+@@ -33,7 +33,7 @@
+ AC_PATH_PROG([GLIB_GENMARSHAL], [glib-genmarshal])
+ 
+ PKG_CHECK_MODULES(CLUTTER, glib-2.0
+-			clutter-0.9 >= 0.9.3)
++			clutter-1.0 >= 1.0.0)
+ 
+ AC_SUBST(CLUTTER_CFLAGS)
+ AC_SUBST(CLUTTER_LIBS)
