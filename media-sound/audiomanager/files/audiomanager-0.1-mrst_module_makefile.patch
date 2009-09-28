@@ -1,0 +1,10 @@
+--- ori/src/Makefile.am	2009-05-11 06:08:18.000000000 +0800
++++ distro/src/Makefile.am	2009-06-02 14:24:59.000000000 +0800
+@@ -6,6 +6,7 @@
+ AM_LIBADD = $(DBUS_LIBS) $(GLIB20_LIBS) $(pulse) $(pulsecommon) $(pulsecore) -L/usr/lib/pulse-0.9.15/modules/
+ AM_CFLAGS = $(LIBPULSE_CFLAGS) $(DBUS_CFLAGS) $(GLIB20_CFLAGS) -I/usr/include/pulse-modules-headers/  -I/usr/lib/include/pulse -I/usr/lib/include/ -I/usr/include 
+ MODULE_LDFLAGS = -module -avoid-version
++CFLAGS+=-Wl,-rpath -Wl,$(modlibexecdir)
+ 
+ #if HAVE_AM_EXTEND_PROTOCOL
+ #lib_LTLIBRARIES = libam-extend-protocol.la libam-dbus-server-util.la libmixer-util.la

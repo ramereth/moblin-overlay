@@ -1,0 +1,80 @@
+diff --git a/src/platform/mrst/mixer-util.c b/src/platform/mrst/mixer-util.c
+index 82c2e57..7664a4b 100644
+--- a/src/platform/mrst/mixer-util.c
++++ b/src/platform/mrst/mixer-util.c
+@@ -44,7 +44,7 @@ static gboolean
+ mixer_filter_func (GstMixer * mixer, gpointer user_data)
+ {
+ 	GstElementFactory *factory;
+-	const gchar *long_name;
++	const gchar *long_name = NULL;
+ 	gchar *devname = NULL;
+ 	gchar *dev_id = (gchar *)user_data;
+ 	gboolean ret = FALSE;
+diff --git a/core/src/modules/audio_manager/platform/mrst/module-mrst-specific.c b/core/src/modules/audio_manager/platform/mrst/module-mrst-specific.c
+index e45a5f3..47ad8fc 100644
+--- a/src/platform/mrst/module-mrst-specific.c
++++ b/src/platform/mrst/module-mrst-specific.c
+@@ -424,6 +424,14 @@ static int update_tracks(struct userdata *u, const char *udi)
+ 		return -1;
+ 	}
+ 
++  if (strcmp(card_id, "") == 0) {
++    card_id = libhal_device_get_property_string(u->context, udi, "alsa.device_id", &error);
++    if (dbus_error_is_set(&error) || !card_id) {
++      pa_log_error("can't get alsa.device_id");
++      return -1;
++    }
++  }
++
+ 	pa_mutex_lock(u->mutex);
+ 	mixer = get_mixer_by_device_id(card_id);
+ 	count += mixer_get_num_tracks(mixer);
+@@ -1279,21 +1287,21 @@ static char *hci_type_to_str(int type)
+ {
+         switch (type) {
+         case HCI_TYPE_VIRTUAL:
+-                return "VIRTUAL";
++                return (char *)"VIRTUAL";
+         case HCI_TYPE_USB:
+-                return "USB";
++                return (char *)"USB";
+         case HCI_TYPE_PCCARD:
+-                return "PCCARD";
++                return (char *)"PCCARD";
+         case HCI_TYPE_UART:
+-                return "UART";
++                return (char *)"UART";
+         case HCI_TYPE_RS232:
+-                return "RS232";
++                return (char *)"RS232";
+         case HCI_TYPE_PCI:
+-                return "PCI";
++                return (char *)"PCI";
+         case HCI_TYPE_SDIO:
+-                return "SDIO";
++                return (char *)"SDIO";
+         default:
+-                return "UNKNOWN";
++                return (char *)"UNKNOWN";
+         }
+ }
+ 
+@@ -1424,6 +1432,8 @@ static int release_device_priv(am_device* d ){
+ 			pa_xfree(dev_priv->originating_udi);
+ 			pa_xfree(dev_priv->path);
+ 	}
++
++  return 0;
+ }
+ 
+ static pa_hook_result_t bt_device_event_cb(pa_bluetooth_discovery *y, const pa_bluetooth_device *d, struct userdata *u) {
+@@ -1854,7 +1864,6 @@ void release_stream_by_am_stream_id(guint am_stream_id)
+ 
+ gint lpe_stream_unregister(guint lpe_stream_id)
+ {
+-	am_stream *lpe_stream = NULL;
+ 	guint am_stream_id;
+ 	struct userdata *u = g_u;
+
+ 

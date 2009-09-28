@@ -1,0 +1,72 @@
+diff --git a/src/policy.c b/src/policy.c
+index 37557e0..db46b25 100644
+--- a/src/policy.c
++++ b/src/policy.c
+@@ -84,7 +84,6 @@ static pa_bool_t exception = FALSE;
+ static am_obj_callback exception_func;
+ 
+ static void eva_dev_name(void *data, char *val);
+-static void eva_dev_type(void *data, char *val);
+ static void eva_dev_prio(void *data, char *val);
+ static void eva_app_name(void *data, char *val);
+ static void eva_app_device(void *data, char *val);
+@@ -96,7 +95,7 @@ static void eva_app_attenuation(void *data, char *val);
+ static void eva_prio_mapping(void *data, char *val);
+ am_conf_obj objs[] = {
+     /* Device object */
+-    {OBJ_DEVICE, DEV_F_NAME, eva_dev_name}, {OBJ_DEVICE, DEV_F_TYPE, eva_dev_type},
++    {OBJ_DEVICE, DEV_F_NAME, eva_dev_name},
+     {OBJ_DEVICE, DEV_F_PRIO, eva_dev_prio},
+ 
+     /* App object */
+@@ -127,9 +126,8 @@ static void print_obj(char *name, int objtype) {
+         am_conf_device *d = get_obj(name, objtype);
+         if ( d ) {
+             pa_log_warn("\ndevice.name = %s\n"
+-                   "      .type = %s\n"
+                    "      .prio = %d\n",
+-                   d->name, d->type, d->prio);
++                   d->name, d->prio);
+         } else
+             pa_log_warn("No device(%s)\n", name);
+     } else if (objtype == OBJ_APP ) {
+@@ -339,18 +337,6 @@ static void eva_dev_name(void *data, char *val) {
+     evaluate_obj_to_default((void *)d, OBJ_DEVICE);
+ }
+ 
+-static void eva_dev_type(void *data, char *val) {
+-    am_conf_device *d;
+-
+-    pa_assert(data && val);
+-    val = get_field(val);
+-    d = devices.current;
+-    pa_assert(d);
+-
+-    pa_assert(d->type == NULL);
+-    d->type = pa_xstrdup(val);
+-}
+-
+ static int eva_prio(int prio) {
+     prio = ( prio < DEV_PRIO_MIN ? DEV_PRIO_MIN : prio );
+     prio = ( prio > DEV_PRIO_MAX ? DEV_PRIO_MAX : prio );
+@@ -698,8 +684,6 @@ void am_release_objs(int objtype) {
+                     PA_LLIST_REMOVE(am_conf_device, devices.items, d);
+                     pa_assert(d->name);
+                     pa_xfree(d->name);
+-                    if ( d->type )
+-                        pa_xfree(d->type);
+                     pa_xfree(d);
+                     d = n;
+                 }
+diff --git a/src/policy.h b/src/policy.h
+index 20708f9..50311dd 100644
+--- a/src/policy.h
++++ b/src/policy.h
+@@ -70,7 +70,6 @@ enum {
+ struct am_conf_device
+ {
+     char* name;
+-    char* type;
+     int prio;
+ 
+     PA_LLIST_FIELDS(struct am_conf_device);
