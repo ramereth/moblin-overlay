@@ -20,5 +20,7 @@ RDEPEND=""
 
 src_install () {
 	emake DESTDIR="${D}" install || die "emake failed"
+	# conflicts with net-nfs/samba
+	rm -rf "${D}"/usr/bin
 	dodoc docs/README
 }
