@@ -1,0 +1,13 @@
+--- bickley-0.3~20090429/bickley/bkl-db.c~	2009-04-30 00:24:17.000000000 -0700
++++ bickley-0.3~20090429/bickley/bkl-db.c	2009-04-30 00:24:17.000000000 -0700
+@@ -287,7 +287,9 @@
+ 
+     d->array = g_ptr_array_new ();
+     d->include_broken = include_broken;
+-    kozo_db_foreach (db->db, build_item_list, d);
++
++    if (db)
++          kozo_db_foreach (db->db, build_item_list, d);
+ 
+     return d->array;
+ }

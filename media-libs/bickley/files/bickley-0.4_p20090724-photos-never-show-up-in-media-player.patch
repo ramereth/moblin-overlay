@@ -1,0 +1,34 @@
+From 0a16be99633a05041a23933d13b6f0af689b4c55 Mon Sep 17 00:00:00 2001
+From: iain <iain@linux.intel.com>
+Date: Thu, 30 Jul 2009 22:46:49 +0100
+Subject: [PATCH 2/2] Fix #4829 - Photos never show up in Media Player
+
+Check all strings retrieved from libexif are valid UTF-8 before passing them
+through D-Bus, as libdbus will just exit if it is passed invalid UTF8
+---
+ src/exif-metadata.c |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/exif-metadata.c b/src/exif-metadata.c
+index 17d66e3..4213218 100644
+--- a/src/exif-metadata.c
++++ b/src/exif-metadata.c
+@@ -78,8 +78,13 @@ void each_entry (ExifEntry *entry,
+ 
+     for (i=0;mappings[i].string;i++) {
+         if (mappings[i].tag == entry->tag) {
+-            g_hash_table_insert (metadata, mappings[i].string,
+-                                 g_strdup (value));
++            if (g_utf8_validate (value, -1, NULL) == FALSE) {
++                g_warning ("%s contained invalid utf8 data: %s",
++                           mappings[i].string, value);
++            } else {
++                g_hash_table_insert (metadata, mappings[i].string,
++                                     g_strdup (value));
++            }
+             break;
+         }
+     }
+-- 
+1.6.3.3
+

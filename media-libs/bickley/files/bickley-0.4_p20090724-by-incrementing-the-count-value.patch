@@ -1,0 +1,24 @@
+From 8cf6c06e53abb9228909ae799095e3f9913bd733 Mon Sep 17 00:00:00 2001
+From: iain <iain@linux.intel.com>
+Date: Tue, 28 Jul 2009 13:16:06 +0100
+Subject: [PATCH] Fix 4801 by incrementing the count value.
+
+---
+ src/video-gst-thumbnailer.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/src/video-gst-thumbnailer.c b/src/video-gst-thumbnailer.c
+index be0b53d..78e7575 100644
+--- a/src/video-gst-thumbnailer.c
++++ b/src/video-gst-thumbnailer.c
+@@ -174,6 +174,7 @@ bkl_task_video_thumbnail (GFile      *file,
+             return FALSE;
+         }
+ 
++	count++;
+         interesting = is_interesting (shot);
+     }
+ 
+-- 
+1.6.3.3
+

@@ -1,0 +1,120 @@
+From b6ffb5ccf9a8ddb81b74e02b2e54d53d9265fa87 Mon Sep 17 00:00:00 2001
+From: Jussi Kukkonen <jku@linux.intel.com>
+Date: Wed, 19 Aug 2009 13:33:36 +0300
+Subject: [PATCH] use ctime instead of mtime (hack)
+
+bickley uses mtime to see if file has changed. This is wrong, at least
+wrt to how the last modification times are cached currently. The
+problem is that inode changes (e.g. moving a file) do not trigger a
+mtime change.
+
+We should change all apis to refer to ctime, but this bug fix
+only changes the implementation.
+
+Fixes #5069
+---
+ src/bkl-investigator.c |   16 ++++++++++++++--
+ src/bkl-path-finder.c  |   19 +++++++++++++++----
+ 2 files changed, 29 insertions(+), 6 deletions(-)
+
+diff --git a/src/bkl-investigator.c b/src/bkl-investigator.c
+index 20b8537..664c5bd 100644
+--- a/src/bkl-investigator.c
++++ b/src/bkl-investigator.c
+@@ -89,7 +89,7 @@ static BklInvestigator *investigator = NULL;
+ #define DEATH_TIMEOUT 10 /* seconds from the last file is processed to death */
+ 
+ /* FIXME: Whats the difference between time::modified and time::changed? */
+-#define REQUIRED_FIELDS "standard::size,standard::content-type,time::modified"
++#define REQUIRED_FIELDS "standard::size,standard::content-type,time::changed"
+ 
+ static gboolean no_death = FALSE;
+ static gboolean show_process = FALSE;
+@@ -150,6 +150,18 @@ get_video_metadata (GFile      *file,
+     return care;
+ }
+ 
++/* FIXME: temporary function to bypass the mtime/ctime problem
++ * (bug 5069). The name of the function (and all *mname* functions in
++ * bickley) are erroneus: we should change all API to refer to ctime */
++static void
++get_modification_time (GFileInfo *info,
++                       GTimeVal  *result)
++{
++    result->tv_sec = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_TIME_CHANGED);
++    result->tv_usec = g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_TIME_CHANGED_USEC);
++}
++
++
+ #if __WORDSIZE == 64
+ #define G_GINT64_MODIFIER "l"
+ # else
+@@ -201,7 +213,7 @@ process_uri (const char *uri)
+     g_hash_table_insert (metadata, METADATA_FILE_SIZE,
+                          g_strdup_printf ("%" G_GINT64_MODIFIER "d", g_file_info_get_size (info)));
+ 
+-    g_file_info_get_modification_time (info, &result);
++    get_modification_time (info, &result);
+     g_hash_table_insert (metadata, METADATA_FILE_MTIME,
+                          g_strdup_printf ("%ld", result.tv_sec));
+ 
+diff --git a/src/bkl-path-finder.c b/src/bkl-path-finder.c
+index 07a332e..9812e50 100644
+--- a/src/bkl-path-finder.c
++++ b/src/bkl-path-finder.c
+@@ -30,7 +30,7 @@
+ #include "bkl-path-finder.h"
+ 
+ /*#define REQUIRED_FIELDS "*" */
+-#define REQUIRED_FIELDS "standard::type,standard::name,time::modified,standard::content-type"
++#define REQUIRED_FIELDS "standard::type,standard::name,time::changed,standard::content-type"
+ 
+ typedef struct _BklPathFinderDir {
+     char *uri;
+@@ -261,6 +261,17 @@ entry_in_directory (BklPathFinderDir *pfd,
+     return exists;
+ }
+ 
++/* FIXME: temporary function to bypass the mtime/ctime problem
++ * (bug 5069). The name of the function (and all *mname* functions in
++ * bickley) are erroneus: we should change all API to refer to ctime */
++static void
++get_modification_time (GFileInfo *info,
++                       GTimeVal  *result)
++{
++    result->tv_sec = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_TIME_CHANGED);
++    result->tv_usec = g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_TIME_CHANGED_USEC);
++}
++
+ static void
+ process_file (BklPathFinder *finder,
+               GFile         *file)
+@@ -303,7 +314,7 @@ process_file (BklPathFinder *finder,
+ 
+         iu = g_slice_new (InvestigateUri);
+         iu->file = g_object_ref (file);
+-        g_file_info_get_modification_time (info, &iu->mtime);
++        get_modification_time (info, &iu->mtime);
+         g_ptr_array_add (flist, iu);
+ 
+         g_object_unref (info);
+@@ -427,14 +438,14 @@ process_file (BklPathFinder *finder,
+                     InvestigateUri *iu = g_slice_new (InvestigateUri);
+ 
+                     iu->file = subfile;
+-                    g_file_info_get_modification_time (info, &iu->mtime);
++                    get_modification_time (info, &iu->mtime);
+ 
+                     g_ptr_array_add (album_art, iu);
+                 } else if (!is_image) {
+                     InvestigateUri *iu = g_slice_new (InvestigateUri);
+ 
+                     iu->file = subfile;
+-                    g_file_info_get_modification_time (info, &iu->mtime);
++                    get_modification_time (info, &iu->mtime);
+ 
+                     g_ptr_array_add (flist, iu);
+                 }
+-- 
+1.6.3.3
+
