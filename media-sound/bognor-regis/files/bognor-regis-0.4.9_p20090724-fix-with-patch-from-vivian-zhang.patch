@@ -1,0 +1,28 @@
+From 7c4d79fe4ae5257f72eb51a03a42dabe5d3cef82 Mon Sep 17 00:00:00 2001
+From: iain <iain@linux.intel.com>
+Date: Wed, 29 Jul 2009 17:53:14 +0100
+Subject: [PATCH] Fix 4841 with patch from Vivian Zhang
+
+---
+ src/bognor-local-queue.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/src/bognor-local-queue.c b/src/bognor-local-queue.c
+index 616c538..af10027 100644
+--- a/src/bognor-local-queue.c
++++ b/src/bognor-local-queue.c
+@@ -152,6 +152,11 @@ set_audio_uri (BognorQueue     *queue,
+         g_object_set (priv->playbin,
+                       "uri", "",
+                       NULL);
++
++        if (priv->audio_state == GST_STATE_PLAYING) {
++            gst_element_set_state (priv->playbin, GST_STATE_PAUSED);
++            priv->audio_state = GST_STATE_PAUSED;
++        }
+         return;
+     }
+ 
+-- 
+1.6.3.3
+

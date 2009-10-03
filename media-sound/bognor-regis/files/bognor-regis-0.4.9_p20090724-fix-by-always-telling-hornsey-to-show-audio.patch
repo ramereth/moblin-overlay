@@ -1,0 +1,63 @@
+From 8f010977bdd697d47985ef5bd5982e2055b986c7 Mon Sep 17 00:00:00 2001
+From: iain <iain@linux.intel.com>
+Date: Tue, 28 Jul 2009 13:00:37 +0100
+Subject: [PATCH 1/2] Fix 4636 by always telling hornsey to show audio as visual
+
+---
+ src/bognor-local-queue.c |   26 +++++++++++++-------------
+ 1 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/src/bognor-local-queue.c b/src/bognor-local-queue.c
+index 112bd02..616c538 100644
+--- a/src/bognor-local-queue.c
++++ b/src/bognor-local-queue.c
+@@ -118,26 +118,23 @@ should_show_audio_as_visual (BognorQueue *queue)
+ {
+     BognorLocalQueue *local = (BognorLocalQueue *) queue;
+     BognorLocalQueuePrivate *priv = local->priv;
++    BognorQueueItem *item = bognor_queue_get_current_item (queue);
+     GError *error = NULL;
+ 
+     if (priv->hornsey_running == FALSE) {
+         return;
+     }
+ 
+-    if (bognor_queue_get_visual_enabled (queue)) {
+-        BognorQueueItem *item = bognor_queue_get_current_item (queue);
+-
+-        g_print ("Showing audio as visual\n");
+-        if (item == NULL) {
+-            return;
+-        }
++    if (item == NULL || item->type == VISUAL_TYPE) {
++        return;
++    }
+ 
+-        if (!org_moblin_BognorRegis_Player_show_uri (priv->hornsey, item->uri,
+-                                                     item->mimetype, &error)) {
+-            g_warning ("Error telling Hornsey about %s: %s", item->uri,
+-                       error->message);
+-            g_error_free (error);
+-        }
++    g_print ("Showing audio as visual\n");
++    if (!org_moblin_BognorRegis_Player_show_uri (priv->hornsey, item->uri,
++                                                 item->mimetype, &error)) {
++        g_warning ("Error telling Hornsey about %s: %s", item->uri,
++                   error->message);
++        g_error_free (error);
+     }
+ }
+ 
+@@ -519,6 +516,9 @@ can_show_visual_changed (DBusGProxy  *proxy,
+                          BognorQueue *queue)
+ {
+     bognor_queue_set_visual_enabled (queue, can_show);
++    if (can_show) {
++        should_show_audio_as_visual (queue);
++    }
+ }
+ 
+ static void
+-- 
+1.6.3.3
+
