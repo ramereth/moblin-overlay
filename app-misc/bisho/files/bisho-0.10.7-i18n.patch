@@ -1,0 +1,313 @@
+diff --git a/po/de.po b/po/de.po
+index 00dc4bc..41b58d3 100644
+--- a/po/de.po
++++ b/po/de.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
+ "Language-Team: \n"
+@@ -18,8 +18,8 @@ msgid "Web Services"
+ msgstr "Web-Services"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "MeineZone, Status & mehr"
++msgid "myzone & status"
++msgstr "MeineZone & Status"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+diff --git a/po/es.po b/po/es.po
+index 5b655fe..36986f8 100644
+--- a/po/es.po
++++ b/po/es.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: Tomás Galicia <tomas.galicia@intel.com>\n"
+ "Language-Team: \n"
+@@ -18,8 +18,8 @@ msgid "Web Services"
+ msgstr "Servicios web"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "MiZona, estado, etc."
++msgid "myzone & status"
++msgstr "MiZona y estado"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+diff --git a/po/fi.po b/po/fi.po
+index 36afbb6..24e60d3 100644
+--- a/po/fi.po
++++ b/po/fi.po
+@@ -2,9 +2,9 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+-"Last-Translator: Omar Antila <omarx.s.antila@intel.com>\n"
++"Last-Translator: GLS <tomas.galicia@intel.com>\n"
+ "Language-Team: \n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+@@ -17,10 +17,9 @@ msgstr ""
+ msgid "Web Services"
+ msgstr "Verkkopalvelut"
+ 
+-# my zone, status etc.
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "Oma vyöhyke, tila jne."
++msgid "myzone & status"
++msgstr "Oma vyöhyke & tila"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+diff --git a/po/fr.po b/po/fr.po
+index 3699366..fadc2a0 100644
+--- a/po/fr.po
++++ b/po/fr.po
+@@ -2,24 +2,24 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+-"Last-Translator: glsfra_Sophie <sophiex.marchese@intel.com>\n"
++"Last-Translator: Loïc Dufresne de Virel <loic.dufresne.de.virel@intel.com>\n"
+ "Language-Team: \n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
+ "X-Poedit-Language: French\n"
+ "X-Poedit-SourceCharset: utf-8\n"
+-"Plural-Forms: nplurals=2; plural=n!=1; \n"
++"Plural-Forms: nplurals=2; plural=n!=1;\n"
+ 
+ #: ../data/bisho.desktop.in.h:1
+ msgid "Web Services"
+ msgstr "Services Web"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "mazone, statut & plus"
++msgid "myzone & status"
++msgstr "MaZone & statut"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+@@ -40,7 +40,7 @@ msgstr "Paramètres des services Web"
+ 
+ #: ../src/bisho-window.c:204
+ msgid "Set up your social networks to see new updates in myzone and the status panel."
+-msgstr "Configurez vos réseaux sociaux pour voir les dernières mises à jour dans mazone et le panneau de statut."
++msgstr "Configurez vos réseaux sociaux pour voir les dernières mises à jour dans MaZone et le panneau de statut."
+ 
+ #: ../src/bisho-window.c:225
+ #, c-format
+diff --git a/po/ja.po b/po/ja.po
+index cbde5a5..6537b29 100644
+--- a/po/ja.po
++++ b/po/ja.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+ "Language-Team: \n"
+@@ -18,8 +18,8 @@ msgid "Web Services"
+ msgstr "Web サービス"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "マイゾーン、ステータス、その他"
++msgid "myzone & status"
++msgstr "マイゾーン & ステータス"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+diff --git a/po/ko.po b/po/ko.po
+index 3689e0b..37dd141 100644
+--- a/po/ko.po
++++ b/po/ko.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
+ "Language-Team: \n"
+@@ -18,8 +18,8 @@ msgid "Web Services"
+ msgstr "웹 서비스"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "마이 존, 상태 & 기타"
++msgid "myzone & status"
++msgstr "마이존 & 상태 "
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+@@ -40,7 +40,7 @@ msgstr "웹 서비스 설정"
+ 
+ #: ../src/bisho-window.c:204
+ msgid "Set up your social networks to see new updates in myzone and the status panel."
+-msgstr "마이 존의 새로운 업데이트 및 상태 패널을 보기 위해 귀하의 소셜 네트워크를 설정하십시오. "
++msgstr "마이존의 새로운 업데이트 및 상태 패널을 보기 위해 귀하의 소셜 네트워크를 설정하십시오. "
+ 
+ #: ../src/bisho-window.c:225
+ #, c-format
+diff --git a/po/pt_BR.po b/po/pt_BR.po
+index 93fb7b1..371d669 100644
+--- a/po/pt_BR.po
++++ b/po/pt_BR.po
+@@ -2,9 +2,9 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+-"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
++"Last-Translator: williane <williane.tenca@ptiglobal.net>\n"
+ "Language-Team: \n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+@@ -18,8 +18,8 @@ msgid "Web Services"
+ msgstr "Serviços na web"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "Minhazona, status e mais"
++msgid "myzone & status"
++msgstr "MinhaZona e status"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+@@ -40,7 +40,7 @@ msgstr "Configurações dos serviços na web"
+ 
+ #: ../src/bisho-window.c:204
+ msgid "Set up your social networks to see new updates in myzone and the status panel."
+-msgstr "Configure suas redes sociais para ver novas atualizações na minhazona e o no painel de status."
++msgstr "Configure suas redes sociais para ver novas atualizações na MinhaZona e o no painel de status."
+ 
+ #: ../src/bisho-window.c:225
+ #, c-format
+diff --git a/po/sv.po b/po/sv.po
+index 37c02bf..07e8ce0 100644
+--- a/po/sv.po
++++ b/po/sv.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
+ "Language-Team: \n"
+@@ -11,13 +11,14 @@ msgstr ""
+ "Content-Transfer-Encoding: 8bit\n"
+ "X-Poedit-Language: Swedish\n"
+ "X-Poedit-SourceCharset: utf-8\n"
++"Plural-Forms: nplurals=2; plural=n!=1;\n"
+ 
+ #: ../data/bisho.desktop.in.h:1
+ msgid "Web Services"
+ msgstr "Webbtjänster"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
++msgid "myzone & status"
+ msgstr "Myzone, status etc."
+ 
+ #: ../src/bisho-window.c:94
+diff --git a/po/zh_CN.po b/po/zh_CN.po
+index aa94f58..b23e64f 100644
+--- a/po/zh_CN.po
++++ b/po/zh_CN.po
+@@ -7,8 +7,8 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: bisho\n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
+-"PO-Revision-Date: 2009-07-015 10:52:+0800\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
++"PO-Revision-Date: 2009-07-28 10:52:+0800\n"
+ "Last-Translator: Zhu Yanhai <yanhai.zhu@intel.com>\n"
+ "Language-Team: zh_CN <yanhai.zhu@intel.com>\n"
+ "MIME-Version: 1.0\n"
+@@ -20,8 +20,8 @@ msgid "Web Services"
+ msgstr "Web服务"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "首页,当前状态及其他"
++msgid "myzone & status"
++msgstr "首页和当前状态"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+diff --git a/po/zh_TW.po b/po/zh_TW.po
+index 5dfe513..d4f801c 100644
+--- a/po/zh_TW.po
++++ b/po/zh_TW.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-15 09:18+0000\n"
++"POT-Creation-Date: 2009-07-27 09:21+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: Glscht_Wen <wen.hsinx.moh@intel.com>\n"
+ "Language-Team: \n"
+@@ -17,8 +17,8 @@ msgid "Web Services"
+ msgstr "網絡服務"
+ 
+ #: ../data/bisho.desktop.in.h:2
+-msgid "myzone, status & more"
+-msgstr "我的地區 (myzone)，狀態以及更多"
++msgid "myzone & status"
++msgstr "我的地區和狀態"
+ 
+ #: ../src/bisho-window.c:94
+ msgid "Launch site for more information."
+@@ -39,7 +39,7 @@ msgstr "網絡服務設置"
+ 
+ #: ../src/bisho-window.c:204
+ msgid "Set up your social networks to see new updates in myzone and the status panel."
+-msgstr "設置您的社交網絡，尋看我的地區 (myzone) 和狀態控制板的最新信息。"
++msgstr "設置您的社交網絡，尋看我的地區和狀態控制板的最新信息。"
+ 
+ #: ../src/bisho-window.c:225
+ #, c-format
+@@ -114,9 +114,9 @@ msgstr "<b>狀態：</b>"
+ #: ../src/bisho-oauth-pane.c:237
+ #, c-format
+ msgid "Once you have logged in to %s, press Continue."
+-msgstr "一旦你登錄到 %s ，請按一下繼續。"
++msgstr "一旦您登錄到 %s ，請按一下繼續。"
+ 
+ #: ../src/bisho-flickr-pane.c:262
+ msgid "Once you have logged in to Flickr, press Continue."
+-msgstr "一旦你登入到 Flickr ，請按一下繼續。"
++msgstr "一旦您登入到 Flickr ，請按一下繼續。"
+ 
