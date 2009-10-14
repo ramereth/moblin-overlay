@@ -1,0 +1,15 @@
+Signed-off-by: Yan Li <yan.i.li@intel.com>
+---
+--- fastinit-1.9/rc.d/rc.sysinit~	2009-06-25 10:54:23.000000000 +0800
++++ fastinit-1.9/rc.d/rc.sysinit	2009-06-25 10:55:56.000000000 +0800
+@@ -235,8 +235,8 @@
+ 
+ 	# start acpid for detecting the on/off key and such
+ 	# must start before HAL.
+-	if [ -x /usr/sbin/acpid ] ; then
+-		/usr/sbin/acpid &
++	if [ -x /usr/sbin/acpid-start-script ] ; then
++		/usr/sbin/acpid-start-script &
+ 	fi
+ 
+ 	# wait for dbus to start accepting connections

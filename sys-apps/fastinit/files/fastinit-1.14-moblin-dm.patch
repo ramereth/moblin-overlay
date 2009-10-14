@@ -1,0 +1,46 @@
+Index: fastinit-1.9/moblin-dm
+===================================================================
+--- /dev/null
++++ fastinit-1.9/moblin-dm
+@@ -0,0 +1,29 @@
++#!/bin/sh
++
++PATH=/sbin:/usr/sbin:/bin:/usr/bin
++
++# We need to source this so that the login screens get translated
++[ -f /etc/sysconfig/i18n ] && . /etc/sysconfig/i18n
++
++# Run preferred X display manager
++quit_arg=
++preferred=
++if [ -f /etc/sysconfig/desktop ]; then
++    . /etc/sysconfig/desktop
++    if [ "$DISPLAYMANAGER" = GDM ]; then
++        preferred=/usr/sbin/gdm
++    elif [ "$DISPLAYMANAGER" = UXLAUNCH ]; then
++        preferred=/usr/sbin/uxlaunch
++    fi
++fi
++
++shopt -s execfail
++
++[ -n "$preferred" ] && exec $preferred "$@" >/dev/null 2>&1 </dev/null
++
++# Fallbacks, in order
++exec uxlaunch "$@" >/dev/null 2>&1 </dev/null
++exec gdm "$@" >/dev/null 2>&1 </dev/null
++
++exit 1
++
+Index: fastinit-1.9/Makefile
+===================================================================
+--- fastinit-1.9.orig/Makefile
++++ fastinit-1.9/Makefile
+@@ -15,6 +15,7 @@ install:
+ 	install -m644 inittab $(ROOT)/etc/inittab.sysv 
+ 	install -m755 service $(ROOT)/sbin
+ 	install -m755 boot-and-install $(ROOT)/sbin
++	install -m755 moblin-dm $(ROOT)/usr/sbin
+ 	install -d $(ROOT)$(mandir)/man8
+ 	install -m644 service.8 $(ROOT)$(mandir)/man8
+ 	install -m644 sysctl.conf $(ROOT)/etc/sysctl.conf

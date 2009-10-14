@@ -1,0 +1,43 @@
+diff -urN fastinit-1.9/rc.d/rc fastinit-1.9.new/rc.d/rc
+--- fastinit-1.9/rc.d/rc	2009-05-12 20:54:00.000000000 +0800
++++ fastinit-1.9.new/rc.d/rc	2009-06-18 14:08:18.000000000 +0800
+@@ -32,7 +32,7 @@
+ 	if [ "$do_confirm" = "yes" ]; then
+ 		echo $"Entering interactive startup"
+ 	else
+-		echo $"Entering non-interactive startup"
++		echo $"Entering non-interactive startup" > /dev/null
+ 	fi
+ fi
+ 
+diff -urN fastinit-1.9/rc.d/rc.sysinit fastinit-1.9.new/rc.d/rc.sysinit
+--- fastinit-1.9/rc.d/rc.sysinit	2009-05-12 20:54:00.000000000 +0800
++++ fastinit-1.9.new/rc.d/rc.sysinit	2009-06-18 14:08:59.000000000 +0800
+@@ -225,6 +225,13 @@
+ touch /var/spool/gdm/force-display-on-active-vt-2
+ 
+ {
++	# Clean up utmp/wtmp
++	> /var/run/utmp
++	> /var/run/utmpx
++	touch /var/log/wtmp /var/log/wtmpx
++	chgrp utmp /var/run/utmp{,x} /var/log/wtmp{,x}
++	chmod 0664 /var/run/utmp{,x} /var/log/wtmp{,x}
++
+ 	# enable logging
+ 	if [ -x /sbin/rsyslogd ] ; then
+ 	(
+@@ -251,13 +258,6 @@
+ 	# udevd -d
+ 	
+ 
+-	# Clean up utmp/wtmp
+-	> /var/run/utmp
+-	> /var/run/utmpx
+-	touch /var/log/wtmp /var/log/wtmpx
+-	chgrp utmp /var/run/utmp{,x} /var/log/wtmp{,x}
+-	chmod 0664 /var/run/utmp{,x} /var/log/wtmp{,x}
+-
+ 	rm -f /dev/.in_sysinit
+ 	
+ 	# Make ICE directory
