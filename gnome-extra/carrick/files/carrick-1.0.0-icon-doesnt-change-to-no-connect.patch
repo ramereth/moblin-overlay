@@ -1,0 +1,50 @@
+diff --git a/carrick/carrick-status-icon.c b/carrick/carrick-status-icon.c
+index d6f7c83..e7cd503 100644
+--- a/carrick/carrick-status-icon.c
++++ b/carrick/carrick-status-icon.c
+@@ -170,6 +170,13 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
+   CmService *service = NULL;
+   const GList *services = NULL;
+ 
++  /* Disconnect this handler in case there's still a lingering
++   * connection. This might have been caused by the service the handler
++   * was connected to disappearing */
++  g_signal_handlers_disconnect_by_func (service,
++                                        _service_updated_cb,
++                                        icon);
++
+   if (priv->manager)
+   {
+     services = cm_manager_get_services (priv->manager);
+@@ -180,6 +187,7 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
+   if (service)
+   {
+     type = cm_service_get_type (service);
++
+     if (g_strcmp0 (type, "ethernet") == 0)
+     {
+         icon_state = ICON_ACTIVE;
+@@ -224,6 +232,12 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
+                           G_CALLBACK (_service_updated_cb),
+                           icon);
+     }
++
++    /* We've now set the icon for the top service, if this service
++     * is not connected we should set the icon to the offline one.
++     */
++    if (!cm_service_get_connected (service))
++      icon_state = ICON_OFFLINE;
+   }
+   else
+   {
+@@ -281,6 +295,10 @@ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+                       "services-changed",
+                       G_CALLBACK (_manager_change_cb),
+                       icon);
++    g_signal_connect (priv->manager,
++                      "state-changed",
++                      G_CALLBACK (_manager_change_cb),
++                      icon);
+   }
+ 
+   carrick_status_icon_update (icon);

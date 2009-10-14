@@ -1,0 +1,185 @@
+diff --git a/carrick/carrick-applet.c b/carrick/carrick-applet.c
+index 74e2fc6..b9df5d2 100644
+--- a/carrick/carrick-applet.c
++++ b/carrick/carrick-applet.c
+@@ -43,40 +43,10 @@ struct _CarrickAppletPrivate {
+   CmManager          *manager;
+   GtkWidget          *icon;
+   GtkWidget          *pane;
+-  gchar              *state;
+   CarrickIconFactory *icon_factory;
+   CarrickNotificationManager *notifications;
+ };
+ 
+-static void
+-manager_services_changed_cb (CmManager *manager,
+-			     gpointer   user_data)
+-{
+-  CarrickApplet *applet = CARRICK_APPLET (user_data);
+-  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
+-
+-  if (priv->icon)
+-    carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
+-}
+-
+-static void
+-manager_state_changed_cb (CmManager *manager,
+-                          gpointer   user_data)
+-{
+-  CarrickApplet *applet = CARRICK_APPLET (user_data);
+-  CarrickAppletPrivate *priv = GET_PRIVATE (applet);
+-  gchar *new_state = g_strdup (cm_manager_get_state (manager));
+-
+-  if (g_strcmp0 (priv->state, new_state) != 0)
+-  {
+-    g_free (priv->state);
+-    priv->state = new_state;
+-  }
+-
+-  if (priv->icon)
+-    carrick_status_icon_update (CARRICK_STATUS_ICON (priv->icon));
+-}
+-
+ GtkWidget*
+ carrick_applet_get_pane (CarrickApplet *applet)
+ {
+@@ -157,7 +127,6 @@ carrick_applet_init (CarrickApplet *self)
+   }
+   /* FIXME: handle return value here */
+   cm_manager_refresh (priv->manager);
+-  priv->state = g_strdup (cm_manager_get_state (priv->manager));
+   priv->icon_factory = carrick_icon_factory_new ();
+   priv->icon = carrick_status_icon_new (priv->icon_factory,
+                                         priv->manager);
+@@ -166,15 +135,6 @@ carrick_applet_init (CarrickApplet *self)
+                                  priv->notifications,
+                                  priv->manager);
+   gtk_widget_show (priv->pane);
+-
+-  g_signal_connect (priv->manager,
+-                    "state-changed",
+-                    G_CALLBACK (manager_state_changed_cb),
+-                    self);
+-  g_signal_connect (priv->manager,
+-                    "services-changed",
+-                    G_CALLBACK (manager_services_changed_cb),
+-                    self);
+ }
+ 
+ CarrickApplet*
+diff --git a/carrick/carrick-status-icon.c b/carrick/carrick-status-icon.c
+index 2233061..d6f7c83 100644
+--- a/carrick/carrick-status-icon.c
++++ b/carrick/carrick-status-icon.c
+@@ -46,6 +46,13 @@ enum
+   PROP_MANAGER
+ };
+ 
++/* Forward declaration of private method */
++static void
++carrick_status_icon_update_manager (CarrickStatusIcon *icon,
++                                    CmManager         *manager);
++static void
++carrick_status_icon_update (CarrickStatusIcon *icon);
++
+ static void
+ carrick_status_icon_get_property (GObject *object, guint property_id,
+                                   GValue *value, GParamSpec *pspec)
+@@ -142,7 +149,17 @@ carrick_status_icon_init (CarrickStatusIcon *self)
+                                   GTK_STOCK_NETWORK);
+ }
+ 
+-void
++static void
++_service_updated_cb (CmService         *service,
++                     CarrickStatusIcon *icon)
++{
++  g_signal_handlers_disconnect_by_func (service,
++                                        _service_updated_cb,
++                                        icon);
++  carrick_status_icon_update (icon);
++}
++
++static void
+ carrick_status_icon_update (CarrickStatusIcon *icon)
+ {
+   CarrickStatusIconPrivate *priv = GET_PRIVATE (icon);
+@@ -151,10 +168,13 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
+   guint strength;
+   const gchar *type = NULL;
+   CmService *service = NULL;
++  const GList *services = NULL;
+ 
+   if (priv->manager)
+   {
+-    service  = cm_manager_get_active_service (priv->manager);
++    services = cm_manager_get_services (priv->manager);
++    if (services)
++      service  = services->data;
+   }
+ 
+   if (service)
+@@ -199,6 +219,10 @@ carrick_status_icon_update (CarrickStatusIcon *icon)
+     else
+     {
+         icon_state = ICON_ERROR;
++        g_signal_connect (service,
++                          "service-updated",
++                          G_CALLBACK (_service_updated_cb),
++                          icon);
+     }
+   }
+   else
+@@ -226,7 +250,14 @@ carrick_status_icon_set_active (CarrickStatusIcon *icon,
+   carrick_status_icon_update (icon);
+ }
+ 
+-void
++static void
++_manager_change_cb (CmManager         *manager,
++                   CarrickStatusIcon *icon)
++{
++  carrick_status_icon_update (icon);
++}
++
++static void
+ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+                                     CmManager         *manager)
+ {
+@@ -234,6 +265,10 @@ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+ 
+   if (priv->manager)
+   {
++    g_signal_handlers_disconnect_by_func (priv->manager,
++                                          _manager_change_cb,
++                                          icon);
++
+     g_object_unref (priv->manager);
+     priv->manager= NULL;
+   }
+@@ -241,6 +276,11 @@ carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+   if (manager)
+   {
+     priv->manager= g_object_ref (manager);
++
++    g_signal_connect (priv->manager,
++                      "services-changed",
++                      G_CALLBACK (_manager_change_cb),
++                      icon);
+   }
+ 
+   carrick_status_icon_update (icon);
+diff --git a/carrick/carrick-status-icon.h b/carrick/carrick-status-icon.h
+index ba0729b..98a7daf 100644
+--- a/carrick/carrick-status-icon.h
++++ b/carrick/carrick-status-icon.h
+@@ -61,9 +61,6 @@ GtkWidget* carrick_status_icon_new (CarrickIconFactory *factory,
+ 
+ void carrick_status_icon_set_active (CarrickStatusIcon *icon,
+                                      gboolean           active);
+-void carrick_status_icon_update_manager (CarrickStatusIcon *icon,
+-                                         CmManager         *manager);
+-void carrick_status_icon_update (CarrickStatusIcon *icon);
+ void carrick_status_icon_set_connecting (CarrickStatusIcon *icon);
+ G_END_DECLS
+ 

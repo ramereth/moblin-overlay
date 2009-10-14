@@ -1,0 +1,38 @@
+From d4e57658b21c772e53b8070306e6618fe2fb3416 Mon Sep 17 00:00:00 2001
+From: Joshua Lock <josh@linux.intel.com>
+Date: Wed, 29 Jul 2009 09:49:11 +0100
+Subject: [PATCH] CarrickPane: Fix crasher caused by sending ConnMan an invalid value
+
+The 0th item is the None entry. Because we have marked that string for
+translation we should convert it to a form that ConnMan recognises if it has
+been selected.
+
+Fixes MB #4848
+---
+ carrick/carrick-pane.c |   10 +++++++++-
+ 1 files changed, 9 insertions(+), 1 deletions(-)
+
+diff --git a/carrick/carrick-pane.c b/carrick/carrick-pane.c
+index 4d6a096..3e9e38d 100644
+--- a/carrick/carrick-pane.c
++++ b/carrick/carrick-pane.c
+@@ -478,7 +478,15 @@ _new_connection_cb (GtkButton *button,
+     if (network == NULL)
+       return;
+ 
+-    if (g_strcmp0 (security, "WPA2") == 0)
++    if (gtk_combo_box_get_active (GTK_COMBO_BOX (security_combo)) == 0)
++    {
++      /* The 0th item is the None entry. Because we have marked that string
++       * for translation we should convert it to a form that ConnMan recognises
++       * if it has been selected */
++      g_free (security);
++      security = g_strdup ("none");
++    }
++    else if(g_strcmp0 (security, "WPA2") == 0)
+     {
+       g_free (security);
+       security = g_strdup ("rsn");
+-- 
+1.6.2.5
+
