@@ -1,0 +1,66 @@
+From 10258f3f7e831de275aa7ee9e716e5a5bb2883ad Mon Sep 17 00:00:00 2001
+From: ZhuYanhai <zhu.yanhai@gmail.com>
+Date: Sat, 25 Jul 2009 14:46:05 +0000
+Subject: [PATCH] Updates to Chinese (China) (zh_CN) translation
+
+Transmitted-via: Transifex (translate.moblin.org)
+---
+ po/zh_CN.po |   20 ++++++++++++--------
+ 1 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/po/zh_CN.po b/po/zh_CN.po
+index b62fef0..7b38e76 100644
+--- a/po/zh_CN.po
++++ b/po/zh_CN.po
+@@ -1,16 +1,16 @@
+ #  dalston
+ # Copyright (C) 2009 Intel
+ # This file is distributed under the same license as the PACKAGE package.
+-# Zhu Yanhai <yanhai.zhu@intel.com>, 2009.
++# Zhu Yanhai <yanhai.zhu@linux.intel.com>, 2009.
+ #
+ msgid ""
+ msgstr ""
+ "Project-Id-Version: dalston\n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-01 09:16+0000\n"
+-"PO-Revision-Date: 2009-07-03 17:30+0800\n"
+-"Last-Translator: Zhu Yanhai <yanhai.zhu@intel.com>\n"
+-"Language-Team: zh_CN <yanhai.zhu@intel.com>\n"
++"POT-Creation-Date: 2009-07-25 09:21+0000\n"
++"PO-Revision-Date: 2009-07-25 17:30+0800\n"
++"Last-Translator: Zhu Yanhai <yanhai.zhu@linux.intel.com>\n"
++"Language-Team: zh_CN\n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+ "Content-Transfer-Encoding: 8bit\n"
+@@ -78,11 +78,15 @@ msgstr "正在充电中.已充至约<b>%d</b>%%."
+ msgid "Your battery is being used. It is about <b>%d</b>%% full."
+ msgstr "电池放电中.剩余约<b>%d</b>%%."
+ 
+-#: ../dalston/dalston-power-applet.c:472
++#: ../dalston/dalston-power-applet.c:361
++msgid "Sorry, you don't appear to have a battery installed."
++msgstr "抱歉，您的电池似乎没有安装。"
++
++#: ../dalston/dalston-power-applet.c:476
+ msgid "Display brightness"
+ msgstr "屏幕亮度"
+ 
+-#: ../dalston/dalston-power-applet.c:503
++#: ../dalston/dalston-power-applet.c:507
+ msgid "Sorry, we don't support modifying the brightness of your screen"
+ msgstr "抱歉,目前暂不支持修改此种屏幕的亮度."
+ 
+@@ -140,7 +144,7 @@ msgstr "播放测试音"
+ 
+ #: ../dalston/dalston-volume-slider.c:188
+ msgid "Turned up to 11"
+-msgstr "调至11"
++msgstr "声音极大"
+ 
+ #: ../dalston/dalston-volume-slider.c:190
+ msgid "Very loud"
+-- 
+1.6.3.3
+

@@ -1,0 +1,227 @@
+From ecf5434f2fe0f2db7378463462f8b8eea4c9fa88 Mon Sep 17 00:00:00 2001
+From: Rusty Lynch <rusty.lynch@intel.com>
+Date: Mon, 10 Aug 2009 11:05:38 -0700
+Subject: [PATCH] [volume] Auto reconnect to pulseaudio on failed connection
+
+Add a new 'connection-failed' signal to the GvcMixerControl object,
+and then have the volume applet listen for, and initiate a pa open
+after a timeout period.
+---
+ dalston/dalston-volume-applet.c |   64 ++++++++++++++++++++++++++++++++++++++
+ libgvc/gvc-mixer-control.c      |   65 ++++++++++++++++++++++++++------------
+ 2 files changed, 108 insertions(+), 21 deletions(-)
+
+diff --git a/dalston/dalston-volume-applet.c b/dalston/dalston-volume-applet.c
+index 823d4a8..6eb109a 100644
+--- a/dalston/dalston-volume-applet.c
++++ b/dalston/dalston-volume-applet.c
+@@ -40,6 +40,7 @@ struct _DalstonVolumeAppletPrivate {
+   GvcMixerControl *control;
+   GtkStatusIcon *status_icon;
+   GtkWidget *pane;
++  guint timeout;
+ };
+ 
+ static void
+@@ -65,6 +66,14 @@ dalston_volume_applet_set_property (GObject *object, guint property_id,
+ static void
+ dalston_volume_applet_dispose (GObject *object)
+ {
++  DalstonVolumeAppletPrivate *priv = GET_PRIVATE (object);
++
++  if (priv->timeout)
++  {
++      g_source_remove (priv->timeout);
++      priv->timeout = 0;
++  }
++
+   G_OBJECT_CLASS (dalston_volume_applet_parent_class)->dispose (object);
+ }
+ 
+@@ -112,6 +121,57 @@ _mixer_control_default_sink_changed_cb (GvcMixerControl *control,
+                 NULL);
+ }
+ 
++static gboolean
++_reopen_pa_timeout_cb (gpointer data)
++{
++  DalstonVolumeAppletPrivate *priv = GET_PRIVATE (data);
++
++  priv->timeout = 0;
++  gvc_mixer_control_open (priv->control);
++  return FALSE;
++}
++
++static void
++_mixer_control_connection_failed_cb (GvcMixerControl *control,
++				     gpointer         userdata)
++{
++  DalstonVolumeAppletPrivate *priv = GET_PRIVATE (userdata);
++
++  g_signal_handlers_disconnect_by_func (priv->control,
++					_mixer_control_default_sink_changed_cb,
++					userdata);
++  g_signal_handlers_disconnect_by_func (priv->control,
++					_mixer_control_ready_cb,
++					userdata);
++  g_signal_handlers_disconnect_by_func (priv->control,
++					_mixer_control_connection_failed_cb,
++					userdata);
++
++  priv->control = gvc_mixer_control_new ();
++  g_signal_connect (priv->control,
++                    "default-sink-changed",
++                    (GCallback)_mixer_control_default_sink_changed_cb,
++                    userdata);
++  g_signal_connect (priv->control,
++                    "ready",
++                    (GCallback)_mixer_control_ready_cb,
++                    userdata);
++  g_signal_connect (priv->control,
++                    "connection-failed",
++                    (GCallback)_mixer_control_connection_failed_cb,
++                    userdata);
++
++  if (priv->timeout)
++  {
++      g_source_remove (priv->timeout);
++      priv->timeout = 0;
++  }
++
++  priv->timeout = g_timeout_add (10000,
++				 _reopen_pa_timeout_cb,
++				 userdata);
++}
++
+ static void
+ dalston_volume_applet_init (DalstonVolumeApplet *self)
+ {
+@@ -129,6 +189,10 @@ dalston_volume_applet_init (DalstonVolumeApplet *self)
+                     "ready",
+                     (GCallback)_mixer_control_ready_cb,
+                     self);
++  g_signal_connect (priv->control,
++                    "connection-failed",
++                    (GCallback)_mixer_control_connection_failed_cb,
++                    self);
+   gvc_mixer_control_open (priv->control);
+ }
+ 
+diff --git a/libgvc/gvc-mixer-control.c b/libgvc/gvc-mixer-control.c
+index 4ac2c6c..af22d2b 100644
+--- a/libgvc/gvc-mixer-control.c
++++ b/libgvc/gvc-mixer-control.c
+@@ -69,6 +69,7 @@ struct GvcMixerControlPrivate
+ 
+ enum {
+         READY,
++        CONNECTION_FAILED,
+         STREAM_ADDED,
+         STREAM_REMOVED,
+         DEFAULT_SINK_CHANGED,
+@@ -84,6 +85,31 @@ static void     gvc_mixer_control_finalize   (GObject              *object);
+ 
+ G_DEFINE_TYPE (GvcMixerControl, gvc_mixer_control, G_TYPE_OBJECT)
+ 
++static void
++_create_mixer_context(GvcMixerControl *mixer)
++{
++        pa_proplist     *proplist;
++
++        /* FIXME: read these from an object property */
++        proplist = pa_proplist_new ();
++        pa_proplist_sets (proplist,
++                          PA_PROP_APPLICATION_NAME,
++                          _("GNOME Volume Control"));
++        pa_proplist_sets (proplist,
++                          PA_PROP_APPLICATION_ID,
++                          "org.gnome.VolumeControl");
++        pa_proplist_sets (proplist,
++                          PA_PROP_APPLICATION_ICON_NAME,
++                          "multimedia-volume-control");
++        pa_proplist_sets (proplist,
++                          PA_PROP_APPLICATION_VERSION,
++                          PACKAGE_VERSION);
++
++        mixer->priv->pa_context = pa_context_new_with_proplist (mixer->priv->pa_api, NULL, proplist);
++        g_assert (mixer->priv->pa_context);
++        pa_proplist_free (proplist);
++}
++
+ pa_context *
+ gvc_mixer_control_get_pa_context (GvcMixerControl *control)
+ {
+@@ -524,6 +550,12 @@ update_sink (GvcMixerControl    *control,
+                                              map);
+                 g_object_unref (map);
+                 is_new = TRUE;
++
++                /*
++                 * If we are creating a new stream, then this is the 
++                 * new default sink.
++                 */
++                control->priv->default_sink_name = g_strdup (info->name);
+         }
+ 
+         max_volume = pa_cvolume_max (&info->volume);
+@@ -1397,7 +1429,8 @@ _pa_context_state_cb (pa_context *context,
+                 break;
+ 
+         case PA_CONTEXT_FAILED:
+-                g_warning ("Connection failed");
++                g_warning ("PA Connection failed");
++                g_signal_emit (G_OBJECT (control), signals[CONNECTION_FAILED], 0);
+                 break;
+ 
+         case PA_CONTEXT_TERMINATED:
+@@ -1499,30 +1532,12 @@ gvc_mixer_control_constructor (GType                  type,
+ {
+         GObject         *object;
+         GvcMixerControl *self;
+-        pa_proplist     *proplist;
+ 
+         object = G_OBJECT_CLASS (gvc_mixer_control_parent_class)->constructor (type, n_construct_properties, construct_params);
+ 
+         self = GVC_MIXER_CONTROL (object);
+-
+-        /* FIXME: read these from an object property */
+-        proplist = pa_proplist_new ();
+-        pa_proplist_sets (proplist,
+-                          PA_PROP_APPLICATION_NAME,
+-                          _("GNOME Volume Control"));
+-        pa_proplist_sets (proplist,
+-                          PA_PROP_APPLICATION_ID,
+-                          "org.gnome.VolumeControl");
+-        pa_proplist_sets (proplist,
+-                          PA_PROP_APPLICATION_ICON_NAME,
+-                          "multimedia-volume-control");
+-        pa_proplist_sets (proplist,
+-                          PA_PROP_APPLICATION_VERSION,
+-                          PACKAGE_VERSION);
+-
+-        self->priv->pa_context = pa_context_new_with_proplist (self->priv->pa_api, NULL, proplist);
+-        g_assert (self->priv->pa_context);
+-        pa_proplist_free (proplist);
++        
++        _create_mixer_context (self);
+ 
+         return object;
+ }
+@@ -1544,6 +1559,14 @@ gvc_mixer_control_class_init (GvcMixerControlClass *klass)
+                               NULL, NULL,
+                               g_cclosure_marshal_VOID__VOID,
+                               G_TYPE_NONE, 0);
++        signals [CONNECTION_FAILED] =
++                g_signal_new ("connection-failed",
++                              G_TYPE_FROM_CLASS (klass),
++                              G_SIGNAL_RUN_LAST,
++                              G_STRUCT_OFFSET (GvcMixerControlClass, ready),
++                              NULL, NULL,
++                              g_cclosure_marshal_VOID__VOID,
++                              G_TYPE_NONE, 0);
+         signals [STREAM_ADDED] =
+                 g_signal_new ("stream-added",
+                               G_TYPE_FROM_CLASS (klass),
+-- 
+1.6.1.3
+
