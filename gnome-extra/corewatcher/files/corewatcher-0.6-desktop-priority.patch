@@ -1,0 +1,8 @@
+--- corewatcher-0.6/corewatcher-applet.desktop.org	2009-07-06 12:49:44.000000000 -0700
++++ corewatcher-0.6/corewatcher-applet.desktop	2009-07-06 12:49:53.000000000 -0700
+@@ -7,3 +7,5 @@
+ Type=Application
+ Categories=
+ X-GNOME-Autostart-enabled=true
++X-Moblin-Priority=Low
++
