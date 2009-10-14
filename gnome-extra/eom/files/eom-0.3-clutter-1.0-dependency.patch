@@ -1,0 +1,15 @@
+diff -urN eom-0.3.orig/configure eom-0.3/configure
+--- eom-0.3.orig/configure	2009-07-02 06:58:55.000000000 +0100
++++ eom-0.3/configure	2009-07-30 22:14:24.000000000 +0100
+@@ -15207,9 +15207,9 @@
+ 
+ 
+ 
+-EOM_MODULES='clutter-0.9 glib-2.0 gio-2.0'
++EOM_MODULES='clutter-1.0 glib-2.0 gio-2.0'
+ EOM_SAMPLE_DIR="`pwd`/images"
+-PICTABLE_MODULES="$EOM_MODULES clutter-box2d-0.9 clutter-gst-0.9"
++PICTABLE_MODULES="$EOM_MODULES clutter-box2d-0.9 clutter-gst-0.10"
+ 
+ # Check whether --enable-gesture was given.
+ if test "${enable_gesture+set}" = set; then
