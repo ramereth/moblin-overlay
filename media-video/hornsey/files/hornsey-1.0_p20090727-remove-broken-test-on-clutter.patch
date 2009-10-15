@@ -1,0 +1,33 @@
+From f29c45684278fc7a725f5a73c2e5d40c788b4c17 Mon Sep 17 00:00:00 2001
+From: Damien Lespiau <damien.lespiau@intel.com>
+Date: Wed, 29 Jul 2009 14:03:19 +0100
+Subject: [PATCH] Remove broken test on clutter 0.9.x now that 1.0 is out
+
+Who needs to compile hornsey against clutter 0.8.x anyway? let's remove
+that!
+---
+ src/hrn-queue.c |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
+
+diff --git a/src/hrn-queue.c b/src/hrn-queue.c
+index bb0b171..3bddbd1 100644
+--- a/src/hrn-queue.c
++++ b/src/hrn-queue.c
+@@ -635,14 +635,10 @@ hrn_queue_pick (ClutterActor *actor, const ClutterColor   *color)
+ 
+   clutter_actor_get_size (CLUTTER_ACTOR (priv->toptable), &width, &height);
+ 
+-#if CLUTTER_MINOR_VERSION < 9
+-  cogl_color (color);
+-#else
+   cogl_set_source_color4ub (color->red,
+                             color->green,
+                             color->blue,
+                             color->alpha);
+-#endif
+   cogl_rectangle (0, 0, width, height);
+ 
+   hrn_queue_paint (actor);
+-- 
+1.6.3.3
+

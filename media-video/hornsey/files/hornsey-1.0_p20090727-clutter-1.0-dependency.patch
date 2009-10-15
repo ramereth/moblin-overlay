@@ -1,0 +1,14 @@
+diff -urN hornsey-1.0~20090727.orig/configure.ac hornsey-1.0~20090727/configure.ac
+--- hornsey-1.0~20090727.orig/configure.ac	2009-07-27 15:40:34.000000000 +0100
++++ hornsey-1.0~20090727/configure.ac	2009-07-29 12:37:45.000000000 +0100
+@@ -21,8 +21,8 @@
+ AC_PROG_CC
+ AC_STDC_HEADERS
+ 
+-PKG_CHECK_MODULES(DEPS, clutter-0.9 \
+-                        clutter-gst-0.9 \
++PKG_CHECK_MODULES(DEPS, clutter-1.0 \
++                        clutter-gst-0.10 \
+                         clutter-imcontext-0.1 \
+                         bickley-0.4 \
+                         nbtk-1.0 \

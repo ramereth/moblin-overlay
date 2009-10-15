@@ -1,0 +1,28 @@
+From 618eded98b2cc20cf101245092a97dbe2fa2adf8 Mon Sep 17 00:00:00 2001
+From: =?utf-8?q?=C3=98yvind=20Kol=C3=A5s?= <pippin@linux.intel.com>
+Date: Tue, 28 Jul 2009 14:02:11 +0100
+Subject: [PATCH] Fix playpause state inconsistency in theatre.
+
+HrnControls is currently a clone of HrnQueue, with the logic for the
+checked state's meaning reversed. This is part of fixing bug #3884.
+(cherry picked from commit 569681be61864e9f7cec5e1c3dd579b66c286ea4)
+---
+ src/hrn-controls.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/hrn-controls.c b/src/hrn-controls.c
+index d63d646..3b6c78b 100644
+--- a/src/hrn-controls.c
++++ b/src/hrn-controls.c
+@@ -715,7 +715,7 @@ hrn_controls_get_playing (HrnControls *queue)
+ {
+   HrnControlsPrivate *priv = HRN_CONTROLS_GET_PRIVATE (queue);
+ 
+-  return nbtk_button_get_checked (NBTK_BUTTON (priv->playpause));
++  return !nbtk_button_get_checked (NBTK_BUTTON (priv->playpause));
+ }
+ 
+ void
+-- 
+1.6.3.3
+

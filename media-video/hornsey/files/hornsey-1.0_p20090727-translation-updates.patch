@@ -1,0 +1,274 @@
+From f3b173050fc46caa90b353811f789c87527727f7 Mon Sep 17 00:00:00 2001
+From: =?utf-8?q?=C3=98yvind=20Kol=C3=A5s?= <pippin@linux.intel.com>
+Date: Tue, 28 Jul 2009 19:38:52 +0100
+Subject: [PATCH 2/2] Translation updates.
+
+That arrived after moblin 2.0 code freeze.
+---
+ po/de.po    |    9 +++++++--
+ po/fi.po    |   10 +++++++---
+ po/ja.po    |    8 ++++++--
+ po/ko.po    |   19 +++++++++++--------
+ po/pt_BR.po |   10 +++++++---
+ po/sv.po    |    8 ++++++--
+ po/zh_TW.po |    8 ++++++--
+ 7 files changed, 50 insertions(+), 22 deletions(-)
+
+diff --git a/po/de.po b/po/de.po
+index acf88ee..13cfb87 100644
+--- a/po/de.po
++++ b/po/de.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:20+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: GLSDEU_Andreas <andreasx.machoy@intel.com>\n"
+ "Language-Team: \n"
+@@ -14,7 +14,7 @@ msgstr ""
+ "Plural-Forms: nplurals=2; plural=n!=1;\n"
+ 
+ #: ../data/hornsey.desktop.in.h:1
+-#: ../src/hornsey.c:1232
++#: ../src/hornsey.c:1253
+ msgid "Media Player"
+ msgstr "Media-Player"
+ 
+@@ -91,6 +91,11 @@ msgstr "Kino"
+ msgid "Show"
+ msgstr "Anzeigen"
+ 
++# This can only refer to the "artist" of a song/music, not a picture or movie.
++#: ../src/hrn-audio-viewer.c:148
++msgid "Unknown Artist"
++msgstr "Unbekannter Interpret"
++
+ #: ../src/hrn-video-player.c:272
+ #, c-format
+ msgid "Sorry, we can't play %s, as we don't have the correct plugin. You could try searching for ❝gstreamer codecs❞ on the web."
+diff --git a/po/fi.po b/po/fi.po
+index ba6ec32..d96ba8e 100644
+--- a/po/fi.po
++++ b/po/fi.po
+@@ -2,9 +2,9 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:20+0000\n"
+ "PO-Revision-Date: \n"
+-"Last-Translator: Omar Antila <oantila@ptiglobal.com>\n"
++"Last-Translator: GLS <tomas.galicia@intel.com>\n"
+ "Language-Team: \n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+@@ -14,7 +14,7 @@ msgstr ""
+ "X-Poedit-SourceCharset: utf-8\n"
+ 
+ #: ../data/hornsey.desktop.in.h:1
+-#: ../src/hornsey.c:1232
++#: ../src/hornsey.c:1253
+ msgid "Media Player"
+ msgstr "Mediasoitin"
+ 
+@@ -95,6 +95,10 @@ msgstr "Teatteri"
+ msgid "Show"
+ msgstr "Näytä"
+ 
++#: ../src/hrn-audio-viewer.c:148
++msgid "Unknown Artist"
++msgstr "Tuntematon artisti"
++
+ #: ../src/hrn-video-player.c:272
+ #, c-format
+ msgid "Sorry, we can't play %s, as we don't have the correct plugin. You could try searching for ❝gstreamer codecs❞ on the web."
+diff --git a/po/ja.po b/po/ja.po
+index fa600a5..91401e6 100644
+--- a/po/ja.po
++++ b/po/ja.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:20+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: GLSJPN_Yukari <yukarix.yamashita@intel.com>\n"
+ "Language-Team: \n"
+@@ -13,7 +13,7 @@ msgstr ""
+ "X-Poedit-SourceCharset: utf-8\n"
+ 
+ #: ../data/hornsey.desktop.in.h:1
+-#: ../src/hornsey.c:1232
++#: ../src/hornsey.c:1253
+ msgid "Media Player"
+ msgstr "メディアプレイヤー"
+ 
+@@ -91,6 +91,10 @@ msgstr "シアターモード"
+ msgid "Show"
+ msgstr "表示"
+ 
++#: ../src/hrn-audio-viewer.c:148
++msgid "Unknown Artist"
++msgstr "不明なアーチスト"
++
+ #: ../src/hrn-video-player.c:272
+ #, c-format
+ msgid "Sorry, we can't play %s, as we don't have the correct plugin. You could try searching for ❝gstreamer codecs❞ on the web."
+diff --git a/po/ko.po b/po/ko.po
+index 1f3f7da..0c99aef 100644
+--- a/po/ko.po
++++ b/po/ko.po
+@@ -2,9 +2,9 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:20+0000\n"
+ "PO-Revision-Date: \n"
+-"Last-Translator: \n"
++"Last-Translator: GLSKOR_SunKim <sunx.kim@intel.com>\n"
+ "Language-Team: \n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+@@ -14,7 +14,7 @@ msgstr ""
+ "X-Poedit-SourceCharset: utf-8\n"
+ 
+ #: ../data/hornsey.desktop.in.h:1
+-#: ../src/hornsey.c:1232
++#: ../src/hornsey.c:1253
+ msgid "Media Player"
+ msgstr "미디어 플레이어"
+ 
+@@ -91,6 +91,10 @@ msgstr "영화관"
+ msgid "Show"
+ msgstr "보기"
+ 
++#: ../src/hrn-audio-viewer.c:148
++msgid "Unknown Artist"
++msgstr "알 수없는 아티스트"
++
+ #: ../src/hrn-video-player.c:272
+ #, c-format
+ msgid "Sorry, we can't play %s, as we don't have the correct plugin. You could try searching for ❝gstreamer codecs❞ on the web."
+@@ -100,9 +104,8 @@ msgstr "죄송합니다. 적절한 플러그인이 없어서 %s(을)를 재생
+ msgid "We can't play this"
+ msgstr "재생할 수 없습니다."
+ 
+-msgid "Medium Items"
+-msgstr "중형 아이템"
+-
+-msgid "Close"
+-msgstr "닫기"
++#~ msgid "Medium Items"
++#~ msgstr "중형 아이템"
++#~ msgid "Close"
++#~ msgstr "닫기"
+ 
+diff --git a/po/pt_BR.po b/po/pt_BR.po
+index ff0f8c2..a483abe 100644
+--- a/po/pt_BR.po
++++ b/po/pt_BR.po
+@@ -2,9 +2,9 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:20+0000\n"
+ "PO-Revision-Date: \n"
+-"Last-Translator: GLSPTB_Gabor <gaborx.k.becht@intel.com>\n"
++"Last-Translator: williane <williane.tenca@ptiglobal.net>\n"
+ "Language-Team: \n"
+ "MIME-Version: 1.0\n"
+ "Content-Type: text/plain; charset=UTF-8\n"
+@@ -14,7 +14,7 @@ msgstr ""
+ "Plural-Forms: nplurals=2; plural=n!=1;\n"
+ 
+ #: ../data/hornsey.desktop.in.h:1
+-#: ../src/hornsey.c:1232
++#: ../src/hornsey.c:1253
+ msgid "Media Player"
+ msgstr "Media Player"
+ 
+@@ -91,6 +91,10 @@ msgstr "Cinema"
+ msgid "Show"
+ msgstr "Mostrar"
+ 
++#: ../src/hrn-audio-viewer.c:148
++msgid "Unknown Artist"
++msgstr "Artista desconhecido"
++
+ #: ../src/hrn-video-player.c:272
+ #, c-format
+ msgid "Sorry, we can't play %s, as we don't have the correct plugin. You could try searching for ❝gstreamer codecs❞ on the web."
+diff --git a/po/sv.po b/po/sv.po
+index 72c3dd1..5656134 100644
+--- a/po/sv.po
++++ b/po/sv.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:20+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: GLSSVE_GMartinson <gmartinson@gmail.com>\n"
+ "Language-Team: \n"
+@@ -14,7 +14,7 @@ msgstr ""
+ "X-Poedit-SourceCharset: utf-8\n"
+ 
+ #: ../data/hornsey.desktop.in.h:1
+-#: ../src/hornsey.c:1232
++#: ../src/hornsey.c:1253
+ msgid "Media Player"
+ msgstr "Mediaspelare"
+ 
+@@ -91,6 +91,10 @@ msgstr "Bio"
+ msgid "Show"
+ msgstr "Visa"
+ 
++#: ../src/hrn-audio-viewer.c:148
++msgid "Unknown Artist"
++msgstr "Okänd artist"
++
+ #: ../src/hrn-video-player.c:272
+ #, c-format
+ msgid "Sorry, we can't play %s, as we don't have the correct plugin. You could try searching for ❝gstreamer codecs❞ on the web."
+diff --git a/po/zh_TW.po b/po/zh_TW.po
+index d81fa2b..f38a23d 100644
+--- a/po/zh_TW.po
++++ b/po/zh_TW.po
+@@ -2,7 +2,7 @@ msgid ""
+ msgstr ""
+ "Project-Id-Version: \n"
+ "Report-Msgid-Bugs-To: \n"
+-"POT-Creation-Date: 2009-07-20 09:19+0000\n"
++"POT-Creation-Date: 2009-07-27 09:20+0000\n"
+ "PO-Revision-Date: \n"
+ "Last-Translator: Glscht_Wen <wen.hsinx.moh@intel.com>\n"
+ "Language-Team: \n"
+@@ -14,7 +14,7 @@ msgstr ""
+ "X-Poedit-SourceCharset: utf-8\n"
+ 
+ #: ../data/hornsey.desktop.in.h:1
+-#: ../src/hornsey.c:1232
++#: ../src/hornsey.c:1253
+ msgid "Media Player"
+ msgstr "媒體播放器"
+ 
+@@ -91,6 +91,10 @@ msgstr "電影院"
+ msgid "Show"
+ msgstr "顯示"
+ 
++#: ../src/hrn-audio-viewer.c:148
++msgid "Unknown Artist"
++msgstr "無名藝術家"
++
+ #: ../src/hrn-video-player.c:272
+ #, c-format
+ msgid "Sorry, we can't play %s, as we don't have the correct plugin. You could try searching for ❝gstreamer codecs❞ on the web."
+-- 
+1.6.3.3
+
