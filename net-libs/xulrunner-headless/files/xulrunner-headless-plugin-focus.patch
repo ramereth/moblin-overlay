@@ -1,0 +1,49 @@
+diff -r -pu xulrunner-1.9.2a1pre~20090805/widget/src/headless/nsWindow.cpp new/widget/src/headless/nsWindow.cpp
+--- xulrunner-1.9.2a1pre~20090805/widget/src/headless/nsWindow.cpp	2009-07-31 12:31:58.000000000 +0100
++++ new/widget/src/headless/nsWindow.cpp	2009-08-14 17:00:17.000000000 +0100
+@@ -1634,7 +1634,8 @@ nsWindow::SetPluginType(PluginType aPlug
+ void
+ nsWindow::SetNonXEmbedPluginFocus()
+ {
+-    if (gPluginFocusWindow == this || mPluginType!=PluginType_NONXEMBED) {
++    // XEmbed plugin also needs the method to set focus
++    if (gPluginFocusWindow == this /*|| mPluginType!=PluginType_NONXEMBED*/) {
+         return;
+     }
+ 
+@@ -1668,9 +1669,15 @@ nsWindow::SetNonXEmbedPluginFocus()
+     // lookup with the focus proxy window is supposed to get the
+     // same GdkWindow as toplevel. If the current focused window
+     // is not the focus proxy, we return without any change.
++
++    //in headless, gdkfocuswin is null, so remove this condition
++    //plugin focus will be set when mouse pointer enter
++    //and focus will be lost when mouse pointer leave
++    /*
+     if (gdkfocuswin != toplevel) {
+         return;
+     }
++    */
+ 
+     // switch the focus from the focus proxy to the plugin window
+     mOldFocusWindow = curFocusWindow;
+@@ -1698,7 +1705,8 @@ nsWindow::LoseNonXEmbedPluginFocus()
+ 
+     // This method is only for the nsWindow which contains a
+     // Non-XEmbed plugin, for example, JAVA plugin.
+-    if (gPluginFocusWindow != this || mPluginType!=PluginType_NONXEMBED) {
++    // XEmbed plugin also needs this method to lose focus
++    if (gPluginFocusWindow != this /*|| mPluginType!=PluginType_NONXEMBED*/) {
+         return;
+     }
+ 
+@@ -1783,6 +1791,9 @@ nsWindow::PluginWindowXEventFilterFunc(G
+         case EnterNotify:
+             nswindow->SetNonXEmbedPluginFocus();
+             break;
++        case LeaveNotify:
++            nswindow->LoseNonXEmbedPluginFocus();
++            break;
+         case DestroyNotify:
+             // Currently we consider all plugins are non-xembed and calls
+             // LoseNonXEmbedPluginFocus without any checking.

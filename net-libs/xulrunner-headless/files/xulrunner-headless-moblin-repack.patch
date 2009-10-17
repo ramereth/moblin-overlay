@@ -1,0 +1,249 @@
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/libxul-embedding-headless.pc.in xulrunner-0.0~20090616/xulrunner/installer/libxul-embedding-headless.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/libxul-embedding-headless.pc.in	1970-01-01 08:00:00.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/libxul-embedding-headless.pc.in	2009-06-25 14:12:39.000000000 +0800
+@@ -0,0 +1,10 @@
++prefix=%prefix%
++sdkdir=%sdkdir%
++includedir=%includedir%
++idldir=%idldir%
++
++Name: libxul-embedding-headless
++Description: Static library for version-independent embedding of the Mozilla runtime
++Version: %MOZILLA_VERSION%
++Libs: -L${sdkdir}/sdk/lib -lxpcomglue
++Cflags: -DXPCOM_GLUE -I${includedir} %WCHAR_CFLAGS%
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/libxul-embedding.pc.in xulrunner-0.0~20090616/xulrunner/installer/libxul-embedding.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/libxul-embedding.pc.in	2009-06-25 14:08:40.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/libxul-embedding.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,10 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-idldir=%idldir%
+-
+-Name: libxul-embedding
+-Description: Static library for version-independent embedding of the Mozilla runtime
+-Version: %MOZILLA_VERSION%
+-Libs: -L${sdkdir}/sdk/lib -lxpcomglue
+-Cflags: -DXPCOM_GLUE -I${includedir} %WCHAR_CFLAGS%
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/libxul-headless.pc.in xulrunner-0.0~20090616/xulrunner/installer/libxul-headless.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/libxul-headless.pc.in	1970-01-01 08:00:00.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/libxul-headless.pc.in	2009-06-25 14:56:52.000000000 +0800
+@@ -0,0 +1,11 @@
++prefix=%prefix%
++sdkdir=%sdkdir%
++includedir=%includedir%
++idldir=%idldir%
++
++Name: libxul-headless
++Description: The Mozilla Runtime and Embedding Engine
++Version: %MOZILLA_VERSION%
++Requires: %NSPR_NAME% >= %NSPR_VERSION%
++Libs: -L${sdkdir}/sdk/lib -lxpcomglue_s -lxul -lxpcom
++Cflags: -I${includedir} %WCHAR_CFLAGS%
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/libxul.pc.in xulrunner-0.0~20090616/xulrunner/installer/libxul.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/libxul.pc.in	2009-06-25 14:08:40.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/libxul.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,11 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-idldir=%idldir%
+-
+-Name: libxul
+-Description: The Mozilla Runtime and Embedding Engine
+-Version: %MOZILLA_VERSION%
+-Requires: %NSPR_NAME% >= %NSPR_VERSION%
+-Libs: -L${sdkdir}/sdk/lib -lxpcomglue_s -lxul -lxpcom
+-Cflags: -I${includedir} %WCHAR_CFLAGS%
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/Makefile.in xulrunner-0.0~20090616/xulrunner/installer/Makefile.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/Makefile.in	2009-06-17 01:24:50.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/Makefile.in	2009-06-25 14:56:33.000000000 +0800
+@@ -83,12 +83,10 @@ endif
+ # Add pkg-config files to the install:: target
+ 
+ pkg_config_files = \
+-	libxul.pc \
+-	libxul-embedding.pc \
+-	mozilla-js.pc \
+-	mozilla-plugin.pc \
+-	mozilla-gtkmozembed.pc \
+-	mozilla-gtkmozembed-embedding.pc \
++	libxul-headless.pc \
++	libxul-embedding-headless.pc \
++	mozilla-js-headless.pc \
++	mozilla-plugin-headless.pc \
+ 	mozilla-headless.pc \
+ 	$(NULL)
+ 
+@@ -96,8 +94,8 @@ ifdef MOZ_NATIVE_NSPR
+ NSPR_NAME=nspr
+ NSPR_VERSION=$(shell $(NSPR_CONFIG) --version)
+ else
+-pkg_config_files += mozilla-nspr.pc
+-NSPR_NAME=mozilla-nspr
++pkg_config_files += mozilla-nspr-headless.pc
++NSPR_NAME=mozilla-nspr-headless
+ FULL_NSPR_CFLAGS=-I\$${includedir}
+ FULL_NSPR_LIBS=$(subst $(prefix),\$${sdkdir},$(shell $(DEPTH)/nsprpub/config/nspr-config --libs))
+ NSPR_VERSION=$(shell $(DEPTH)/nsprpub/config/nspr-config --version)
+@@ -106,7 +104,7 @@ endif
+ $(warning FULL_NSPR_CFLAGS=$(FULL_NSPR_CFLAGS))
+ 
+ ifndef MOZ_NATIVE_NSS
+-pkg_config_files += mozilla-nss.pc
++pkg_config_files += mozilla-nss-headless.pc
+ endif
+ 
+ %.pc: $(srcdir)/%.pc.in $(GLOBAL_DEPS)
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in	2009-06-17 01:24:50.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-gtkmozembed-embedding.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,8 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-
+-Name: mozilla-gtkembedmoz
+-Description: Static version-independent Mozilla Embedding Widget for Gtk+
+-Version: %MOZILLA_VERSION%
+-Requires: libxul-embedding = %MOZILLA_VERSION%
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-gtkmozembed.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-gtkmozembed.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-gtkmozembed.pc.in	2009-06-17 01:24:50.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-gtkmozembed.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,8 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-
+-Name: mozilla-gtkembedmoz
+-Description: Mozilla Embedding Widget for Gtk+
+-Version: %MOZILLA_VERSION%
+-Requires: libxul = %MOZILLA_VERSION%
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-headless.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-headless.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-headless.pc.in	2009-06-17 01:24:50.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-headless.pc.in	2009-06-25 14:13:52.000000000 +0800
+@@ -5,4 +5,4 @@ includedir=%includedir%
+ Name: mozilla-headless
+ Description: Mozilla Headless Embedding API
+ Version: %MOZILLA_VERSION%
+-Requires: libxul = %MOZILLA_VERSION%
++Requires: libxul-headless = %MOZILLA_VERSION%
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-js-headless.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-js-headless.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-js-headless.pc.in	1970-01-01 08:00:00.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-js-headless.pc.in	2009-06-25 14:57:01.000000000 +0800
+@@ -0,0 +1,10 @@
++prefix=%prefix%
++sdkdir=%sdkdir%
++includedir=%includedir%
++
++Name: JavaScript
++Description: The Mozilla JavaScript Library
++Version: %MOZILLA_VERSION%
++Requires: %NSPR_NAME% >= %NSPR_VERSION%
++Libs: -L${sdkdir}/sdk/lib -lmozjs
++Cflags: -I${includedir} -DXP_UNIX -DJS_THREADSAFE
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-js.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-js.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-js.pc.in	2009-06-25 14:08:40.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-js.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,10 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-
+-Name: JavaScript
+-Description: The Mozilla JavaScript Library
+-Version: %MOZILLA_VERSION%
+-Requires: %NSPR_NAME% >= %NSPR_VERSION%
+-Libs: -L${sdkdir}/sdk/lib -lmozjs
+-Cflags: -I${includedir} -DXP_UNIX -DJS_THREADSAFE
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nspr-headless.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-nspr-headless.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nspr-headless.pc.in	1970-01-01 08:00:00.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-nspr-headless.pc.in	2009-06-25 14:14:33.000000000 +0800
+@@ -0,0 +1,11 @@
++prefix=%prefix%
++sdkdir=%sdkdir%
++includedir=%includedir%
++
++Name: NSPR-headless
++Description: The Netscape Portable Runtime
++Version: %NSPR_VERSION%
++Libs: %FULL_NSPR_LIBS%
++Cflags: %FULL_NSPR_CFLAGS%
++
++
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nspr.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-nspr.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nspr.pc.in	2009-04-08 01:02:12.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-nspr.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,11 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-
+-Name: NSPR
+-Description: The Netscape Portable Runtime
+-Version: %NSPR_VERSION%
+-Libs: %FULL_NSPR_LIBS%
+-Cflags: %FULL_NSPR_CFLAGS%
+-
+-
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nss-headless.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-nss-headless.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nss-headless.pc.in	1970-01-01 08:00:00.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-nss-headless.pc.in	2009-06-25 14:57:08.000000000 +0800
+@@ -0,0 +1,10 @@
++prefix=%prefix%
++sdkdir=%sdkdir%
++includedir=%includedir%
++
++Name: NSS-headless
++Description: Mozilla Network Security Services
++Version: %MOZILLA_VERSION%
++Requires: %NSPR_NAME% >= %NSPR_VERSION%
++Libs: -L${sdkdir}/sdk/lib -lnss3 -lnssutil3 -lsmime3 -lssl3 -lsoftokn3
++Cflags: -I${includedir}
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nss.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-nss.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-nss.pc.in	2009-06-25 14:08:40.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-nss.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,10 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-
+-Name: NSS
+-Description: Mozilla Network Security Services
+-Version: %MOZILLA_VERSION%
+-Requires: %NSPR_NAME% >= %NSPR_VERSION%
+-Libs: -L${sdkdir}/sdk/lib -lnss3 -lnssutil3 -lsmime3 -lssl3 -lsoftokn3
+-Cflags: -I${includedir}
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-plugin-headless.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-plugin-headless.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-plugin-headless.pc.in	1970-01-01 08:00:00.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-plugin-headless.pc.in	2009-06-17 01:24:50.000000000 +0800
+@@ -0,0 +1,8 @@
++prefix=%prefix%
++sdkdir=%sdkdir%
++includedir=%includedir%
++
++Name: Mozilla Plug-In API
++Description: Mozilla Plug-In API
++Version: %MOZILLA_VERSION%
++Cflags: -I${includedir} -DXP_UNIX
+diff -rupN xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-plugin.pc.in xulrunner-0.0~20090616/xulrunner/installer/mozilla-plugin.pc.in
+--- xulrunner-0.0~20090616.orig/xulrunner/installer/mozilla-plugin.pc.in	2009-06-17 01:24:50.000000000 +0800
++++ xulrunner-0.0~20090616/xulrunner/installer/mozilla-plugin.pc.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,8 +0,0 @@
+-prefix=%prefix%
+-sdkdir=%sdkdir%
+-includedir=%includedir%
+-
+-Name: Mozilla Plug-In API
+-Description: Mozilla Plug-In API
+-Version: %MOZILLA_VERSION%
+-Cflags: -I${includedir} -DXP_UNIX
+--- xulrunner-0.0~20090616.orig/config/milestone.txt	2009-04-08 01:03:18.000000000 +0800
++++ xulrunner-0.0~20090616/config/milestone.txt	2009-06-25 14:19:59.000000000 +0800
+@@ -10,4 +10,4 @@
+ # hardcoded milestones in the tree from these two files.
+ #--------------------------------------------------------
+ 
+-1.9.2a1pre
++1.9.2a1pre-headless

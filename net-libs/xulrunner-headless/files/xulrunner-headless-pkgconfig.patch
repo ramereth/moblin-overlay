@@ -1,0 +1,40 @@
+diff -r 5d647d702b66 xulrunner/installer/libxul-embedding.pc.in
+--- a/xulrunner/installer/libxul-embedding.pc.in	Tue Jun 16 18:22:06 2009 +0100
++++ b/xulrunner/installer/libxul-embedding.pc.in	Tue Jun 16 19:59:01 2009 +0100
+@@ -6,5 +6,5 @@
+ Name: libxul-embedding
+ Description: Static library for version-independent embedding of the Mozilla runtime
+ Version: %MOZILLA_VERSION%
+-Libs: -L${sdkdir}/lib -lxpcomglue
++Libs: -L${sdkdir}/sdk/lib -lxpcomglue
+ Cflags: -DXPCOM_GLUE -I${includedir} %WCHAR_CFLAGS%
+diff -r 5d647d702b66 xulrunner/installer/libxul.pc.in
+--- a/xulrunner/installer/libxul.pc.in	Tue Jun 16 18:22:06 2009 +0100
++++ b/xulrunner/installer/libxul.pc.in	Tue Jun 16 19:59:01 2009 +0100
+@@ -7,5 +7,5 @@
+ Description: The Mozilla Runtime and Embedding Engine
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+-Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
++Libs: -L${sdkdir}/sdk/lib -lxpcomglue_s -lxul -lxpcom
+ Cflags: -I${includedir} %WCHAR_CFLAGS%
+diff -r 5d647d702b66 xulrunner/installer/mozilla-js.pc.in
+--- a/xulrunner/installer/mozilla-js.pc.in	Tue Jun 16 18:22:06 2009 +0100
++++ b/xulrunner/installer/mozilla-js.pc.in	Tue Jun 16 19:59:01 2009 +0100
+@@ -6,5 +6,5 @@
+ Description: The Mozilla JavaScript Library
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+-Libs: -L${sdkdir}/lib -lmozjs
++Libs: -L${sdkdir}/sdk/lib -lmozjs
+ Cflags: -I${includedir} -DXP_UNIX -DJS_THREADSAFE
+diff -r 5d647d702b66 xulrunner/installer/mozilla-nss.pc.in
+--- a/xulrunner/installer/mozilla-nss.pc.in	Tue Jun 16 18:22:06 2009 +0100
++++ b/xulrunner/installer/mozilla-nss.pc.in	Tue Jun 16 19:59:01 2009 +0100
+@@ -6,5 +6,5 @@
+ Description: Mozilla Network Security Services
+ Version: %MOZILLA_VERSION%
+ Requires: %NSPR_NAME% >= %NSPR_VERSION%
+-Libs: -L${sdkdir}/lib -lnss3 -lnssutil3 -lsmime3 -lssl3 -lsoftokn3
++Libs: -L${sdkdir}/sdk/lib -lnss3 -lnssutil3 -lsmime3 -lssl3 -lsoftokn3
+ Cflags: -I${includedir}
