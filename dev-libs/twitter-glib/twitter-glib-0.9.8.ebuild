@@ -3,14 +3,13 @@
 # $Header: $
 
 EAPI=2
-
-inherit gnome2 autotools
-
-MY_PV="${PV/_p/~}"
+inherit gnome2 autotools git
 
 DESCRIPTION="Twitter library for glib"
-HOMEPAGE="http://moblin.org"
-SRC_URI="http://staff.osuosl.org/~ramereth/distfiles/${PN}-${MY_PV}.tar.gz"
+HOMEPAGE="http://live.gnome.org/TwitterGlib"
+SRC_URI=""
+EGIT_REPO_URI="git://github.com/ebassi/twitter-glib.git"
+EGIT_COMMIT="${PV}"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -19,12 +18,11 @@ IUSE="doc"
 
 DOCS="README AUTHORS ChangeLog"
 
-S="${WORKDIR}/${PN}-${MY_PV}"
-
 DEPEND=">=dev-libs/glib-2.16
 	>=dev-libs/json-glib-0.6
 	>=net-libs/libsoup-2.4.1
 	>=net-libs/libsoup-gnome-2.4.1
+	dev-util/gtk-doc
 	x11-libs/gtk+"
 RDEPEND="${DEPEND}"
 
