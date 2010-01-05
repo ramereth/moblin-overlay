@@ -30,5 +30,6 @@ DOC="README"
 
 src_prepare () {
 	gtkdocize || die "gtkdocize failed"
+	glib-gettextize -f || die "glib-gettextize failed"
 	eautoreconf
 }
