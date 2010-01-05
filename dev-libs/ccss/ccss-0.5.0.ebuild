@@ -19,11 +19,16 @@ IUSE="doc +gtk +cairo +svg +soup"
 
 RDEPEND=">=dev-libs/glib-2
 	>=dev-libs/libcroco-0.6
+	dev-util/gtk-doc
 	cairo? ( >=x11-libs/cairo-1.4 )
 	svg? ( >=gnome-base/librsvg-2.22.4 )
 	soup? ( >=net-libs/libsoup-2.4 )"
-DEPEND="${RDEPEND}
-	doc? ( dev-util/gtk-doc )"
+DEPEND="${RDEPEND}"
+
+src_prepare () {
+	gtkdocize || die "gtkdocize failed"
+	eautoreconf
+}
 
 src_configure () {
 	econf $(use_enable doc gtk-doc) \
@@ -35,5 +40,5 @@ src_configure () {
 
 src_install () {
 	emake DESTDIR="${D}" install || die "emake failed"
-	dodoc README TODO AUTHORS NEWS INSTALL ChangeLog
+	dodoc README TODO AUTHORS NEWS HACKING ChangeLog.SVN
 }
