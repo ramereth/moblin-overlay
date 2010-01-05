@@ -20,6 +20,7 @@ DEPEND=">=media-libs/clutter-1.0
 	>=dev-libs/ccss-0.3.1
 	dev-libs/glib
 	x11-libs/gtk+
+	dev-util/gtk-doc
 	>=media-libs/clutter-imcontext-0.1
 	dev-util/intltool
 	sys-devel/gettext"
@@ -28,5 +29,6 @@ RDEPEND="${DEPEND}"
 DOC="README"
 
 src_prepare () {
+	gtkdocize || die "gtkdocize failed"
 	eautoreconf
 }
