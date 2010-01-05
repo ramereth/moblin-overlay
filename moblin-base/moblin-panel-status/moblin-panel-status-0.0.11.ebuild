@@ -19,7 +19,7 @@ IUSE=""
 DEPEND=">=moblin-base/mutter-moblin-0.50
 	dev-libs/dbus-glib
 	>=media-libs/clutter-gtk-0.10
-	>=x11-libs/mojito-0.20.1
+	>=moblin-libs/mojito-0.20.1
 	>=net-libs/telepathy-glib-0.9.0
 	>=x11-libs/nbtk-1.2"
 RDEPEND="${DEPEND}"

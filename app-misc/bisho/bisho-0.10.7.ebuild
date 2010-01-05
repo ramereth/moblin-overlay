@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""
 
-DEPEND="x11-libs/mojito
+DEPEND="moblin-libs/mojito
 	x11-libs/gtk+
 	gnome-base/gconf
 	gnome-base/gnome-keyring

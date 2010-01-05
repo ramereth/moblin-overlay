@@ -18,7 +18,7 @@ IUSE=""
 
 # NOTE: need to look up what PENGE, and libjana-ecal are for deps
 DEPEND=">=moblin-base/mutter-moblin-0.50
-	x11-libs/mojito
+	moblin-libs/mojito
 	x11-libs/gtk+
 	>=media-libs/bickley-0.4
 	>=moblin-libs/mx-1.0
