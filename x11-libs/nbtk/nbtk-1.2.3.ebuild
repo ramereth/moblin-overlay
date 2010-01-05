@@ -17,7 +17,7 @@ KEYWORDS="~x86 ~amd64"
 IUSE="doc"
 
 DEPEND=">=media-libs/clutter-1.0
-	>=dev-libs/ccss-0.3.1
+	=dev-libs/ccss-0.3.1
 	dev-libs/glib
 	x11-libs/gtk+
 	dev-util/gtk-doc
