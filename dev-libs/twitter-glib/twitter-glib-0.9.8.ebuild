@@ -26,7 +26,10 @@ DEPEND=">=dev-libs/glib-2.16
 	x11-libs/gtk+"
 RDEPEND="${DEPEND}"
 
+DOCS="AUTHORS ChangeLog NEWS README"
+
 src_prepare () {
 	gtkdocize || die "gtkdocize failed"
+	glib-gettextize -f || die "glib-gettextize failed"
 	eautoreconf
 }
