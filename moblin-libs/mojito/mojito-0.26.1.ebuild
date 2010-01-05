@@ -28,6 +28,7 @@ RDEPEND="${DEPEND}"
 DOCS="README AUTHORS NEWS TODO"
 
 src_prepare () {
+	intltoolize --copy --force --automake || die "intltoolize failed"
 	eautoreconf
 }
 
