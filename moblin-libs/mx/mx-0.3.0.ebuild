@@ -18,10 +18,16 @@ IUSE="+imcontext"
 
 DEPEND=">=media-libs/clutter-1.0
 	imcontext? ( >=media-libs/clutter-imcontext-0.1 )
+	dev-util/gtk-doc
+	dev-libs/glib
 	x11-libs/gtk+"
 RDEPEND="${DEPEND}"
 
+DOCS="HACKING NEWS README"
+
 src_prepare() {
+	gtkdocize || die "gtkdocize failed"
+	glib-gettextize -f || die "glib-gettextize failed"
 	eautoreconf
 }
 
