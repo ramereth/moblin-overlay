@@ -17,6 +17,7 @@ KEYWORDS="~x86 ~amd64"
 IUSE=""
 
 DEPEND="moblin-libs/mojito
+	>=x11-libs/nbtk-1.2
 	x11-libs/gtk+
 	gnome-base/gconf
 	gnome-base/gnome-keyring
@@ -31,9 +32,10 @@ RDEPEND="${DEPEND}"
 DOCS="TODO AUTHORS"
 
 src_prepare () {
-	epatch "${FILESDIR}/${P}-i18n.patch"
+	intltoolize --copy --force --automake || die "intltoolize failed"
+	eautoreconf
 }
 
-#src_install () {
-#	emake DESTDIR="${D}" install || die "emake install failed"
-#}
+src_install () {
+	emake DESTDIR="${D}" install || die "emake install failed"
+}
