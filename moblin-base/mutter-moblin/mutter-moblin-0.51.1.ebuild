@@ -20,7 +20,7 @@ DEPEND="dev-libs/dbus-glib
 	>=moblin-libs/mx-0.3.0
 	x11-libs/gtk+
 	dev-libs/glib
-	w11-wm/mutter
+	x11-wm/mutter
 	>=x11-libs/startup-notification-0.10
 	gnome-base/gconf"
 RDEPEND="${DEPEND}"
