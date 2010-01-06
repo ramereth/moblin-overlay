@@ -25,7 +25,10 @@ DEPEND="dev-libs/dbus-glib
 	gnome-base/gconf"
 RDEPEND="${DEPEND}"
 
+DOCS="README"
+
 src_prepare() {
+	intltoolize --copy --force --automake || die "intltoolize failed"
 	eautoreconf
 }
 
