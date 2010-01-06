@@ -27,7 +27,7 @@ DEPEND="
 	media-libs/clutter-gtk
 	media-libs/clutter-gst
 	media-libs/clutter-imcontext
-	media-libs/bickley
+	moblin-libs/bickley
 	x11-libs/nbtk
 	x11-libs/startup-notification
 	dev-libs/libunique

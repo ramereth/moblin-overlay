@@ -20,7 +20,7 @@ IUSE=""
 DEPEND=">=moblin-base/mutter-moblin-0.50
 	moblin-libs/mojito
 	x11-libs/gtk+
-	>=media-libs/bickley-0.4
+	>=moblin-libs/bickley-0.4
 	>=moblin-libs/mx-1.0
 	gnome-base/gconf"
 RDEPEND="${DEPEND}"
