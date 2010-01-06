@@ -39,6 +39,6 @@ src_prepare () {
 	eautoreconf
 }
 
-src_prepare () {
+src_configure () {
 	econf $(use_enable windowmode) || die "econf died"
 }
