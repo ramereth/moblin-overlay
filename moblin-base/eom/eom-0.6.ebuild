@@ -18,6 +18,8 @@ IUSE="debug +gesture twofinger nomotion +gamma"
 
 DEPEND="media-libs/clutter-gesture
 	media-libs/clutter
+	media-libs/clutter-gst
+	media-libs/clutter-box2d
 	dev-libs/glib"
 RDEPEND="${DEPEND}"
 
