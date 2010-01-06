@@ -6,7 +6,7 @@ EAPI="2"
 # debug only changes CFLAGS
 GCONF_DEBUG="no"
 
-inherit eutils gnome2 git versionator
+inherit eutils gnome2 git versionator autotools
 
 MY_PV="$(replace_version_separator 3 '_')"
 
@@ -41,6 +41,9 @@ RDEPEND=">=x11-libs/gtk+-2.10
 	media-libs/libcanberra[gtk]
 	gnome-base/libgtop
 	gnome-extra/zenity
+	dev-libs/gobject-introspection
+	media-libs/clutter[introspection]	
+	media-libs/clutter-gtk[introspection]	
 	!x11-misc/expocity"
 DEPEND="${RDEPEND}
 	>=app-text/gnome-doc-utils-0.8
@@ -54,6 +57,11 @@ DEPEND="${RDEPEND}
 
 DOCS="AUTHORS ChangeLog HACKING NEWS README *.txt doc/*.txt"
 
+src_prepare() {
+	intltoolize --copy --force --automake || die "intltoolize failed"
+	eautoreconf
+}
+
 pkg_setup() {
 	G2CONF="${G2CONF}
 		--enable-compositor
@@ -64,8 +72,4 @@ pkg_setup() {
 		--enable-startup-notification
 		--enable-xsync
 		$(use_enable xinerama)"
-}
-
-src_prepare() {
-	gnome2_src_prepare
 }
