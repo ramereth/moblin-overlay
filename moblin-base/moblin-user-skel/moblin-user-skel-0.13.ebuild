@@ -23,7 +23,7 @@ src_compile () { einfo "no compile"; }
 
 src_install () {
 	insinto /etc/skel
-	local dirs="bkl-thumbnails gnome2 kozo local recently-used.xbel thumbnails"
+	local dirs="bkl-thumbnails gnome2 kozo local recently-used.xbel"
 	for i in ${dirs} ; do
 		doins -r .${i}
 	done
