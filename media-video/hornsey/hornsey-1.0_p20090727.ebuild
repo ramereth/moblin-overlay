@@ -31,7 +31,7 @@ DEPEND="
 	x11-libs/nbtk
 	x11-libs/startup-notification
 	dev-libs/libunique
-	media-sound/bognor-regis
+	moblin-libs/bognor-regis
 	x11-libs/libnotify
 	x11-libs/libXtst
 	gnome-base/gnome-common"

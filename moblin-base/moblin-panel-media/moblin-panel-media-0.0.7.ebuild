@@ -20,7 +20,7 @@ DEPEND=">=moblin-base/mutter-moblin-0.50
 	>=x11-libs/nbtk-1.2
 	>=moblin-libs/bickley-0.4
 	x11-libs/gtk+
-	>=media-sound/bognor-regis-0.6"
+	>=moblin-libs/bognor-regis-0.6"
 RDEPEND="${DEPEND}"
 
 src_prepare() {

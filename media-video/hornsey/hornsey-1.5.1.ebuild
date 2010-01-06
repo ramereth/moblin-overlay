@@ -28,7 +28,7 @@ DEPEND="
 	>=x11-libs/nbtk-1.2
 	>=x11-libs/startup-notification-0.9
 	>=dev-libs/libunique-1.0.6
-	>=media-sound/bognor-regis-0.5.2
+	>=moblin-libs/bognor-regis-0.5.2
 	x11-libs/libnotify
 	x11-libs/libXtst
 	gnome-base/gnome-common"
