@@ -24,8 +24,8 @@ DEPEND="dev-libs/glib
 	media-libs/gstreamer
 	media-libs/libexif
 	media-libs/mesa
-	net-libs/gupnp
-	net-libs/gupnp-av
+	=net-libs/gupnp-0.12*
+	=net-libs/gupnp-av-0.4*
 	gnome-base/gconf
 	sys-libs/tdb
 	media-libs/libogg
@@ -41,7 +41,3 @@ RDEPEND="${DEPEND}"
 src_prepare () {
 	eautoreconf
 }
-
-#src_install () {
-#	emake DESTDIR="${D}" install || die "emake failed"
-#}
