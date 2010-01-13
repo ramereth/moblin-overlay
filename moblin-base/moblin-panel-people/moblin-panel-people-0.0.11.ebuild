@@ -17,7 +17,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND=">=moblin-base/mutter-moblin-0.50
-	>=x11-misc/anerley-0.1.3
+	>=moblin-libs/anerley-0.1.3
 	x11-libs/gtk+
 	>=x11-libs/nbtk-1.2"
 RDEPEND="${DEPEND}"
