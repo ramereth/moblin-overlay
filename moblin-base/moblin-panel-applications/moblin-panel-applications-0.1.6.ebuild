@@ -25,5 +25,6 @@ DEPEND=">=media-libs/clutter-gtk-0.10
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	intltoolize --copy --force --automake || die "intltoolize failed"
 	eautoreconf
 }
