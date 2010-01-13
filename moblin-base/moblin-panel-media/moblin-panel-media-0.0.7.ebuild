@@ -20,9 +20,10 @@ DEPEND=">=moblin-base/mutter-moblin-0.50
 	>=x11-libs/nbtk-1.2
 	>=moblin-libs/bickley-0.4
 	x11-libs/gtk+
-	>=moblin-libs/bognor-regis-0.6"
+	>=moblin-libs/bognor-regis-0.5"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	eautoconf
+	export USE_GNOME2_MACROS=1 USE_COMMON_DOC_BUILD=yes NOCONFIGURE=1
+	gnome-autogen.sh > /dev/null
 }
