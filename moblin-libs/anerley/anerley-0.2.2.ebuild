@@ -11,6 +11,7 @@ SRC_URI=""
 EGIT_REPO_URI="git://git.moblin.org/${PN}"
 EGIT_COMMIT="${PV}"
 WANT_AUTOCONF="2.5"
+WANT_AUTOMAKE="1.11"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -19,7 +20,7 @@ KEYWORDS="~x86 ~amd64"
 RDEPEND=">=dev-libs/glib-2.14
 	>=net-libs/telepathy-glib-0.9.0
 	sys-devel/gettext
-	gnome-base/gnome-common
+	>=gnome-base/gnome-common-2.28
 	moblin-libs/mx
 	gnome-extra/evolution-data-server"
 DEPEND="${RDEPEND}
