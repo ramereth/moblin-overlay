@@ -9,7 +9,8 @@ DESCRIPTION="Moblin Pasteboard Panel"
 HOMEPAGE="http://www.moblin.org"
 SRC_URI=""
 EGIT_REPO_URI="git://git.moblin.org/${PN}"
-EGIT_COMMIT="${PV}"
+#EGIT_COMMIT="${PV}"
+EGIT_COMMIT="98c7fc5b5"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -24,5 +25,6 @@ DEPEND=">=moblin-base/mutter-moblin-0.50
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	intltoolize --copy --force --automake || die "intltoolize failed"
 	eautoreconf
 }
