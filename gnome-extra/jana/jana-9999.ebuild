@@ -26,6 +26,8 @@ RDEPEND="${DEPEND}"
 DOCS="README AUTHORS MAINTAINERS NEWS ChangeLog"
 
 src_prepare () {
+	gtkdocize || die "gtkdocize failed"
+	intltoolize --copy --force --automake || die "intltoolize failed"
 	eautoreconf
 }
 
