@@ -23,5 +23,6 @@ DEPEND=">=moblin-base/mutter-moblin-0.50
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	eautoreconf
+	export USE_GNOME2_MACROS=1 USE_COMMON_DOC_BUILD=yes NOCONFIGURE=1
+	gnome-autogen.sh > /dev/null
 }
